@@ -11,26 +11,42 @@
   --bg:#121b24; --panel:#192530; --raised:#1f2e3b; --line:#2b3d4d;
   --text:#dde6eb; --muted:#8ea3b2; --sheikah:#5ad7e6; --amber:#f0b44c;
   --bad:#e8705f; --ok:#82d48e;
+  --bar:rgba(15,23,30,.88); --tipbg:#0f171e; --on-accent:#0d1a22;
+  --glow1:rgba(90,215,230,.13); --glow2:rgba(240,180,76,.07);
   --cond:"Barlow Condensed","Arial Narrow",sans-serif;
   --body:"Barlow",system-ui,sans-serif;
 }
+:root[data-theme="light"]{
+  --bg:#eef3f6; --panel:#ffffff; --raised:#f2f6f9; --line:#d2dde5;
+  --text:#14212b; --muted:#5a6f7f; --sheikah:#0b9db3; --amber:#c27f0c;
+  --bad:#c84634; --ok:#2c8f42; --bar:rgba(255,255,255,.9); --tipbg:#ffffff; --on-accent:#ffffff;
+  --glow1:rgba(11,157,179,.12); --glow2:rgba(194,127,12,.06);
+}
+@media (prefers-color-scheme:light){
+  :root[data-theme="auto"]{
+    --bg:#eef3f6; --panel:#ffffff; --raised:#f2f6f9; --line:#d2dde5;
+    --text:#14212b; --muted:#5a6f7f; --sheikah:#0b9db3; --amber:#c27f0c;
+    --bad:#c84634; --ok:#2c8f42; --bar:rgba(255,255,255,.9); --tipbg:#ffffff; --on-accent:#ffffff;
+    --glow1:rgba(11,157,179,.12); --glow2:rgba(194,127,12,.06);
+  }
+}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 var(--body);overflow-x:hidden}
-body{min-height:100vh;background:radial-gradient(900px 420px at 15% -10%,rgba(90,215,230,.13),transparent 70%),radial-gradient(700px 380px at 110% 0%,rgba(240,180,76,.07),transparent 70%),var(--bg);background-attachment:fixed;-webkit-tap-highlight-color:transparent}
+body{min-height:100vh;background:radial-gradient(900px 420px at 15% -10%,var(--glow1),transparent 70%),radial-gradient(700px 380px at 110% 0%,var(--glow2),transparent 70%),var(--bg);background-attachment:fixed;-webkit-tap-highlight-color:transparent}
 button,input{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--sheikah);outline-offset:2px}
 .wrap{max-width:1180px;margin:0 auto;padding:20px 18px 40px}
 
 header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:18px}
 h1{font:700 2.4rem/1 var(--cond);margin:0;letter-spacing:.01em;display:flex;align-items:center;gap:10px}
-h1 .logo{flex:none;width:1.15em;height:1.15em;border-radius:22%;background:#0f171e;border:1px solid var(--line);box-shadow:0 0 18px -6px var(--sheikah)}
+h1 .logo{flex:none;width:1.15em;height:1.15em;border-radius:22%;background:var(--tipbg);border:1px solid var(--line);box-shadow:0 0 18px -6px var(--sheikah)}
 h1 .accent{color:var(--sheikah)}
 .sub{color:var(--muted);margin-top:4px}
 .conn{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .btn{background:var(--raised);border:1px solid var(--line);border-radius:10px;padding:9px 16px;cursor:pointer;transition:border-color .15s,transform .1s}
 .btn:active{transform:scale(.97)}
 .btn:hover{border-color:var(--sheikah)}
-.btn.primary{background:linear-gradient(180deg,#7fe4ef,var(--sheikah));color:#0d1a22;border-color:var(--sheikah);font-weight:600;box-shadow:0 6px 18px -8px var(--sheikah)}
+.btn.primary{background:var(--sheikah);color:var(--on-accent);border-color:var(--sheikah);font-weight:600;box-shadow:0 6px 18px -8px var(--sheikah)}
 .pill{font-size:.85rem;padding:5px 10px;border-radius:99px;border:1px solid var(--line);color:var(--muted)}
 .pill.on{color:var(--ok);border-color:var(--ok)}
 
@@ -88,7 +104,7 @@ details.group summary span{color:var(--muted);font:400 .85rem var(--body)}
 .am.cur{outline:2px solid var(--sheikah);outline-offset:1px}
 .am .q{flex:none;width:20px;height:20px;border-radius:50%;border:1px solid var(--amber);color:var(--amber);font:600 .75rem/18px var(--body);text-align:center;cursor:help}
 .am .q:hover{background:var(--amber);color:#1a1206}
-#tip{position:fixed;z-index:50;max-width:300px;background:#0f171e;border:1px solid var(--amber);border-radius:8px;padding:10px 12px;font-size:.85rem;line-height:1.4;pointer-events:none;display:none;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+#tip{position:fixed;z-index:50;max-width:300px;background:var(--tipbg);color:var(--text);border:1px solid var(--amber);border-radius:8px;padding:10px 12px;font-size:.85rem;line-height:1.4;pointer-events:none;display:none;box-shadow:0 10px 30px rgba(0,0,0,.5)}
 #tip b{display:block;font:600 1.05rem/1.2 var(--cond);color:var(--amber);margin-bottom:6px}
 #tip table{border-collapse:collapse;width:100%}
 #tip td{padding:2px 0;vertical-align:top}
@@ -103,14 +119,14 @@ kbd{display:inline-block;min-width:26px;text-align:center;background:var(--raise
 .empty{color:var(--muted);padding:40px 10px;text-align:center;border:1px dashed var(--line);border-radius:8px}
 .warn{background:rgba(232,112,95,.12);border:1px solid var(--bad);color:var(--text);padding:10px 14px;border-radius:8px;margin-bottom:14px;display:none}
 
-.touchbar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:none;gap:8px;padding:8px 12px calc(8px + env(safe-area-inset-bottom,0px));background:rgba(15,23,30,.88);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--line)}
+.touchbar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:none;gap:8px;padding:8px 12px calc(8px + env(safe-area-inset-bottom,0px));background:var(--bar);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--line)}
 .touchbar button{flex:1;padding:11px 8px;border-radius:12px;border:1px solid var(--line);background:var(--raised);font:600 .95rem var(--body)}
 .touchbar button:active{transform:scale(.96)}
-.touchbar .mid{flex:1.6;background:linear-gradient(180deg,#7fe4ef,var(--sheikah));color:#0d1a22;border-color:var(--sheikah);box-shadow:0 6px 18px -8px var(--sheikah)}
+.touchbar .mid{flex:1.6;background:var(--sheikah);color:var(--on-accent);border-color:var(--sheikah);box-shadow:0 6px 18px -8px var(--sheikah)}
 body.native .touchbar{display:flex}
 body.native .wrap{padding-bottom:90px}
 body.native #btnUsb{display:none}
-body.native #btnBle{background:var(--sheikah);color:#0d1a22;border-color:var(--sheikah);font-weight:600}
+body.native #btnBle{background:var(--sheikah);color:var(--on-accent);border-color:var(--sheikah);font-weight:600}
 body.native .keysbox{display:none}
 @media (max-width:860px){
   .grid{grid-template-columns:1fr}
@@ -133,10 +149,43 @@ body.native .keysbox{display:none}
 .set small{display:block;color:var(--muted);font-size:.82rem;margin-bottom:8px}
 .seg{display:flex;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:3px;gap:3px}
 .seg button{flex:1;padding:9px 8px;border:0;border-radius:9px;background:transparent;color:var(--muted);font-weight:600;cursor:pointer}
-.seg button.on{background:var(--sheikah);color:#0d1a22}
+.seg button.on{background:var(--sheikah);color:var(--on-accent)}
 .btn.danger{border-color:var(--bad);color:var(--bad);background:transparent}
 .btn.danger:disabled{opacity:.4;cursor:default}
 .ver{color:var(--muted);font-size:.8rem;text-align:center;margin-top:10px}
+/* Slot lock + battery */
+.slot.active::after{right:36px}
+.slot .lock{position:absolute;top:6px;right:6px;width:26px;height:26px;display:grid;place-items:center;border-radius:8px;color:var(--muted);opacity:.55;transition:opacity .15s,color .15s,background .15s}
+.slot .lock svg{width:15px;height:15px}
+.slot:hover .lock{opacity:1}
+.slot.locked{border-style:dashed;cursor:not-allowed}
+.slot.locked .pic img{filter:grayscale(1) opacity(.55)}
+.slot.locked .n,.slot.locked .nick{opacity:.55}
+.slot.locked .lock{opacity:1;color:var(--amber);background:rgba(240,180,76,.14)}
+.slot.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.pill.batt{display:none;align-items:center;gap:5px}
+.pill.batt.on{display:inline-flex;color:var(--text)}
+.pill.batt.low{color:var(--bad);border-color:var(--bad)}
+.pill.batt svg{width:16px;height:16px}
+/* Favorites, recents */
+.am .fav{flex:none;width:26px;height:26px;display:grid;place-items:center;border-radius:50%;color:var(--muted);font-size:1.05rem;line-height:1;cursor:pointer}
+.am .fav.on{color:var(--amber)}
+.am .fav:hover{background:var(--panel)}
+details.group.special summary{color:var(--sheikah)}
+/* Settings rows */
+.sheet .panel{max-height:88vh;overflow-y:auto}
+.toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 0;cursor:pointer}
+.toggle span small{display:block;color:var(--muted);font-size:.8rem;margin:2px 0 0}
+.toggle input{appearance:none;-webkit-appearance:none;flex:none;width:44px;height:26px;border-radius:99px;background:var(--line);position:relative;cursor:pointer;transition:background .15s;margin:0}
+.toggle input::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .15s}
+.toggle input:checked{background:var(--sheikah)}
+.toggle input:checked::after{transform:translateX(18px)}
+/* Compact list */
+body.compact .am{padding:5px 9px;gap:8px}
+body.compact .am .pic{width:24px;height:24px}
+body.compact .am .id{display:none}
+body.compact .rows{gap:4px}
 @media (max-width:600px){
   html,body{font-size:14px}
   .wrap{padding:calc(12px + env(safe-area-inset-top,0px)) 12px 24px}
@@ -151,7 +200,8 @@ body.native .keysbox{display:none}
   .slot .pic{min-height:38px}
   .slot .pic img{max-height:38px}
   .slot .nick{font-size:.68rem;margin-top:3px}
-  .slot.active::after{top:7px;right:7px;width:6px;height:6px}
+  .slot.active::after{top:9px;right:30px;width:6px;height:6px}
+  .slot .lock{top:3px;right:3px;width:24px;height:24px}
   .grid{display:flex;flex-direction:column;align-items:stretch;gap:12px}
   .side{display:contents}
   main{order:2;width:100%}
@@ -184,6 +234,7 @@ body.native .keysbox{display:none}
     </div>
     <div class="conn">
       <span id="connState" class="pill"></span>
+      <span id="batt" class="pill batt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="2" y="7" width="17" height="10" rx="2"/><path d="M22 11v2"/></svg><span></span></span>
       <button class="btn primary" id="btnUsb" data-i18n="btnUsb"></button>
       <button class="btn" id="btnBle" data-i18n="btnBle"></button>
       <button class="btn" id="btnOff" data-i18n="btnOff" hidden></button>
@@ -258,6 +309,33 @@ body.native .keysbox{display:none}
       </div>
     </div>
     <div class="set">
+      <div class="lbl" data-i18n="theme"></div>
+      <div class="seg" id="themeSeg">
+        <button data-v="dark" data-i18n="themeDark"></button>
+        <button data-v="light" data-i18n="themeLight"></button>
+        <button data-v="auto" data-i18n="themeAuto"></button>
+      </div>
+    </div>
+    <div class="set">
+      <div class="lbl" data-i18n="sortTitle"></div>
+      <div class="seg" id="sortSeg">
+        <button data-v="folder" data-i18n="sortFolder"></button>
+        <button data-v="name" data-i18n="sortName"></button>
+        <button data-v="series" data-i18n="sortSeries"></button>
+      </div>
+    </div>
+    <div class="set">
+      <div class="lbl" data-i18n="densityTitle"></div>
+      <div class="seg" id="densitySeg">
+        <button data-v="normal" data-i18n="densityNormal"></button>
+        <button data-v="compact" data-i18n="densityCompact"></button>
+      </div>
+    </div>
+    <div class="set">
+      <label class="toggle"><span data-i18n-html="autoConnect"></span><input type="checkbox" id="optAuto"></label>
+      <label class="toggle"><span data-i18n-html="vibrate"></span><input type="checkbox" id="optVibe"></label>
+    </div>
+    <div class="set">
       <div class="lbl" data-i18n="savedTitle"></div>
       <small id="savedInfo"></small>
       <button class="btn danger" id="btnClear" data-i18n="clearList"></button>
@@ -268,7 +346,7 @@ body.native .keysbox{display:none}
 <script src="native.js"></script>
 <script>
 /* ================= Langue ================= */
-const APP_VERSION = '1.1.1';
+const APP_VERSION = '1.2.0';
 const I18N = {
   fr: {
     sub: 'Choisis un slot, touche un amiibo, il est prêt dans ton Chameleon Ultra.',
@@ -316,7 +394,19 @@ const I18N = {
     readyLog: 'Prêt. Connecte ton Chameleon et charge tes amiibo.',
     sending: 'Envoi…', slotN: 'Slot {n}', error: 'Erreur', emulate: 'Émuler', empty: 'vide',
     sigBad: 'Signature invalide avec ta clé', emulateIn: 'Émuler dans le slot {n}', sendTo: 'Envoyer les amiibo dans le slot {n}',
-    lootOf: 'Loot de {t}', tipFoot: 'Chances par scan, approximatives (tables datamined).'
+    lootOf: 'Loot de {t}', tipFoot: 'Chances par scan, approximatives (tables datamined).',
+    lock: 'Verrouiller le slot {n}', unlock: 'Déverrouiller le slot {n}',
+    slotLocked: 'Le slot {n} est verrouillé. Touche le cadenas pour le déverrouiller.',
+    lockedOn: 'Slot {n} verrouillé : l\'app n\'écrira plus dessus.', lockedOff: 'Slot {n} déverrouillé.',
+    battery: 'Batterie du Chameleon : {p} % ({v} V)', batteryLow: 'Batterie du Chameleon faible : {p} %.',
+    favorites: '★ Favoris', recents: 'Récents', addFav: 'Ajouter aux favoris', delFav: 'Retirer des favoris',
+    allAmiibo: 'Tous les amiibo', unknownSeries: 'Série inconnue',
+    theme: 'Thème', themeDark: 'Sombre', themeLight: 'Clair', themeAuto: 'Auto',
+    sortTitle: 'Trier la liste', sortFolder: 'Dossier', sortName: 'Nom', sortSeries: 'Série',
+    densityTitle: 'Taille de la liste', densityNormal: 'Normale', densityCompact: 'Compacte',
+    autoConnect: 'Connexion automatique<small>Se reconnecte au dernier Chameleon à l\'ouverture de l\'app.</small>',
+    vibrate: 'Vibration<small>Vibre quand un amiibo est envoyé ou en cas d\'erreur.</small>',
+    autoTry: 'Reconnexion au dernier Chameleon…', autoFail: 'Reconnexion automatique impossible. Touche « Connecter le Chameleon ».'
   },
   en: {
     sub: 'Pick a slot, tap an amiibo, and it\'s ready in your Chameleon Ultra.',
@@ -364,7 +454,19 @@ const I18N = {
     readyLog: 'Ready. Connect your Chameleon and load your amiibo.',
     sending: 'Sending…', slotN: 'Slot {n}', error: 'Error', emulate: 'Emulate', empty: 'empty',
     sigBad: 'Invalid signature with your key', emulateIn: 'Emulate in slot {n}', sendTo: 'Send amiibo to slot {n}',
-    lootOf: 'Loot from {t}', tipFoot: 'Chances per scan, approximate (datamined tables).'
+    lootOf: 'Loot from {t}', tipFoot: 'Chances per scan, approximate (datamined tables).',
+    lock: 'Lock slot {n}', unlock: 'Unlock slot {n}',
+    slotLocked: 'Slot {n} is locked. Tap the padlock to unlock it.',
+    lockedOn: 'Slot {n} locked: the app will not write to it anymore.', lockedOff: 'Slot {n} unlocked.',
+    battery: 'Chameleon battery: {p}% ({v} V)', batteryLow: 'Chameleon battery low: {p}%.',
+    favorites: '★ Favorites', recents: 'Recent', addFav: 'Add to favorites', delFav: 'Remove from favorites',
+    allAmiibo: 'All amiibo', unknownSeries: 'Unknown series',
+    theme: 'Theme', themeDark: 'Dark', themeLight: 'Light', themeAuto: 'Auto',
+    sortTitle: 'Sort the list', sortFolder: 'Folder', sortName: 'Name', sortSeries: 'Series',
+    densityTitle: 'List size', densityNormal: 'Normal', densityCompact: 'Compact',
+    autoConnect: 'Auto-connect<small>Reconnects to the last Chameleon when the app opens.</small>',
+    vibrate: 'Vibration<small>Vibrates when an amiibo is sent or on error.</small>',
+    autoTry: 'Reconnecting to the last Chameleon…', autoFail: 'Auto-connect failed. Tap "Connect the Chameleon".'
   }
 };
 let LANG = 'fr';
@@ -417,6 +519,36 @@ const saved = {
   all() { return this.tx('readonly', st => st.getAll()); },
   clear() { return this.tx('readwrite', st => st.clear()); }
 };
+
+/* ================= Préférences ================= */
+const readJson = (k, d) => { try { return JSON.parse(store.get(k) || 'null') ?? d; } catch { return d; } };
+const prefs = {
+  theme: store.get('amiibo.theme') || 'dark',
+  sort: store.get('amiibo.sort') || 'folder',
+  density: store.get('amiibo.density') || 'normal',
+  auto: store.get('amiibo.autoconnect') !== '0',
+  vibe: store.get('amiibo.vibrate') !== '0'
+};
+const locked = new Set(readJson('amiibo.locked', []));
+const favs = new Set(readJson('amiibo.favs', []));
+let recents = readJson('amiibo.recent', []);
+const saveSet = (k, set) => store.set(k, JSON.stringify([...set]));
+function applyPrefs() {
+  document.documentElement.dataset.theme = prefs.theme;
+  document.body.classList.toggle('compact', prefs.density === 'compact');
+  for (const [seg, v] of [['#themeSeg', prefs.theme], ['#sortSeg', prefs.sort], ['#densitySeg', prefs.density]])
+    for (const b of document.querySelectorAll(seg + ' button')) b.classList.toggle('on', b.dataset.v === v);
+  $('#optAuto').checked = prefs.auto;
+  $('#optVibe').checked = prefs.vibe;
+}
+// Short haptic feedback: native plugin when packaged, Vibration API otherwise
+function buzz(ok) {
+  if (!prefs.vibe) return;
+  try {
+    if (window.Haptics) window.Haptics.notification({ type: ok ? 'SUCCESS' : 'ERROR' }).catch(() => {});
+    else if (navigator.vibrate) navigator.vibrate(ok ? 35 : [70, 60, 70]);
+  } catch {}
+}
 
 const state = {
   items: [], keys: null, dev: null, busy: false,
@@ -700,7 +832,7 @@ $('#pickKey').onchange = async e => {
 
 /* ================= Chameleon Ultra ================= */
 const CMD = { VERSION: 1000, MODE: 1001, SET_ACTIVE: 1003, SET_TYPE: 1004, SET_DEFAULT: 1005, SET_ENABLE: 1006,
-  SET_NICK: 1007, GET_NICK: 1008, SAVE: 1009, GET_ACTIVE: 1018, SET_AC: 4001, GET_AC: 4018, WRITE_PAGES: 4022 };
+  SET_NICK: 1007, GET_NICK: 1008, SAVE: 1009, GET_ACTIVE: 1018, BATTERY: 1025, SET_AC: 4001, GET_AC: 4018, WRITE_PAGES: 4022 };
 const NTAG215 = 1101, HF = 2;
 const NUS = '6e400001-b5a3-f393-e0a9-e50e24dcca9e', NUS_RX = '6e400002-b5a3-f393-e0a9-e50e24dcca9e', NUS_TX = '6e400003-b5a3-f393-e0a9-e50e24dcca9e';
 const lrc = a => { let s = 0; for (const b of a) s = (s + b) & 255; return (256 - s) & 255; };
@@ -760,14 +892,13 @@ async function connectUsb() {
   await afterConnect(dev, 'USB');
 }
 const NATIVE = !!(window.Capacitor && Capacitor.isNativePlatform && Capacitor.isNativePlatform());
-async function connectBleNative() {
+async function connectBleNative(autoId) {
   const B = window.BleClient;
-  let id;
+  let id = autoId;
   try {
     await B.initialize();
-    const d = await B.requestDevice({ namePrefix: 'Chameleon', optionalServices: [NUS] });
-    id = d.deviceId;
-  } catch (e) { if (!/cancel/i.test(e.message || '')) log('Bluetooth: ' + (e.message || e), 'bad'); return; }
+    if (!id) id = (await B.requestDevice({ namePrefix: 'Chameleon', optionalServices: [NUS] })).deviceId;
+  } catch (e) { if (autoId) log(t('autoFail')); else if (!/cancel/i.test(e.message || '')) log('Bluetooth: ' + (e.message || e), 'bad'); return; }
   try {
     await B.connect(id, () => onDisconnect());
     let chunk = 20;
@@ -780,8 +911,9 @@ async function connectBleNative() {
     });
     await B.startNotifications(id, NUS, NUS_TX, v => dev.feed(new Uint8Array(v.buffer, v.byteOffset, v.byteLength)));
     dev.close = async () => { try { await B.disconnect(id); } catch {} };
+    store.set('amiibo.bleId', id);
     await afterConnect(dev, 'Bluetooth');
-  } catch (e) { log(t('bleFail', { e: e.message || e }), 'bad'); }
+  } catch (e) { log(autoId ? t('autoFail') : t('bleFail', { e: e.message || e }), autoId ? '' : 'bad'); }
 }
 async function connectBle() {
   if (NATIVE) return connectBleNative();
@@ -813,10 +945,28 @@ async function afterConnect(dev, via) {
   state.via = via; $('#connState').className = 'pill on'; applyLang();
   $('#btnOff').hidden = false;
   renderSlots();
+  state.lowWarned = false;
+  readBattery();
+  clearInterval(state.battTimer); state.battTimer = setInterval(readBattery, 60000);
+}
+// Battery: 2-byte voltage (mV, big endian) + 1-byte percentage
+async function readBattery() {
+  const d = state.dev; if (!d || state.busy) return;
+  try {
+    const r = await d.cmd(CMD.BATTERY, [], 2000);
+    if (r.length < 3) return;
+    const mv = (r[0] << 8) | r[1], pct = r[2];
+    const el = $('#batt');
+    el.querySelector('span').textContent = pct + ' %';
+    el.title = t('battery', { p: pct, v: (mv / 1000).toFixed(2) });
+    el.classList.add('on'); el.classList.toggle('low', pct <= 20);
+    if (pct <= 20 && !state.lowWarned) { state.lowWarned = true; log(t('batteryLow', { p: pct }), 'bad'); }
+  } catch {}
 }
 function onDisconnect() {
   if (!state.dev) return;
   state.dev = null; state.activeSlot = null;
+  clearInterval(state.battTimer); $('#batt').classList.remove('on', 'low');
   state.via = null; $('#connState').className = 'pill'; applyLang();
   $('#btnOff').hidden = true;
   log(t('disconnectedLog'));
@@ -829,6 +979,7 @@ $('#btnOff').onclick = async () => { const d = state.dev; if (d) { await d.close
 /* ================= Émulation ================= */
 async function emulate(item, forceNew = false) {
   if (!state.dev) return log(t('connectFirst'), 'bad');
+  if (locked.has(state.slot)) { buzz(false); shakeSlot(state.slot); return log(t('slotLocked', { n: state.slot + 1 }), 'bad'); }
   if (state.busy) { state.pending = { item, forceNew }; return; }
   state.busy = true; item.st = 'busy'; render();
   try {
@@ -870,9 +1021,13 @@ async function emulate(item, forceNew = false) {
     state.items.forEach(i => { if (i.st === 'done' && i.slot === s) i.st = ''; });
     item.st = 'done'; item.slot = s; state.lastKey = item.key;
     log(t('ready', { name: item.name, s: s + 1, uid: hex(uid) }), 'ok');
+    recents = [item.key, ...recents.filter(k => k !== item.key)].slice(0, 8);
+    store.set('amiibo.recent', JSON.stringify(recents));
+    buzz(true);
     renderSlots(true);
   } catch (e) {
     item.st = 'err';
+    buzz(false);
     log(`${item.name}: ${e.message}`, 'bad');
   } finally {
     state.busy = false; render();
@@ -978,18 +1133,41 @@ addEventListener('scroll', hideTip, true);
 document.addEventListener('pointerdown', e => { if (!e.target.closest('.q')) hideTip(); });
 
 /* ================= Interface ================= */
+const lockIcon = on => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/>' + (on ? '<path d="M8 11V7a4 4 0 0 1 8 0v4"/>' : '<path d="M8 11V7a4 4 0 0 1 7.5-2"/>') + '</svg>';
+function shakeSlot(s) {
+  const el = $('#slots').children[s]; if (!el) return;
+  el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake');
+}
+function toggleLock(s) {
+  if (locked.has(s)) { locked.delete(s); log(t('lockedOff', { n: s + 1 })); }
+  else { locked.add(s); log(t('lockedOn', { n: s + 1 }), 'ok'); }
+  saveSet('amiibo.locked', locked);
+  buzz(true);
+  renderSlots(); render();
+}
 function renderSlots(flash) {
   const el = $('#slots'); el.innerHTML = '';
   for (let s = 0; s < 8; s++) {
     const b = document.createElement('button');
-    b.className = 'slot' + (s === state.slot ? ' sel' : '') + (s === state.activeSlot ? ' active' : '') + (flash && s === state.slot ? ' flash' : '');
+    const isLocked = locked.has(s);
+    b.className = 'slot' + (s === state.slot ? ' sel' : '') + (s === state.activeSlot ? ' active' : '') + (isLocked ? ' locked' : '') + (flash && s === state.slot ? ' flash' : '');
     b.innerHTML = `<span class="n">${s + 1}</span><span class="pic"></span><span class="nick"></span>`;
     const id = slotId(s), info = id && state.db.get(id);
     if (id) b.querySelector('.pic').appendChild(makeImg(id, info ? info.name : ''));
     b.querySelector('.nick').textContent = state.slotNames[s] || (state.slotIds[s] && !state.dev ? state.slotIds[s].name : (state.dev ? t('empty') : ''));
     b.setAttribute('aria-pressed', s === state.slot);
     b.title = (info ? `${info.name} (${info.series})\n` : '') + t('sendTo', { n: s + 1 });
-    b.onclick = () => { state.slot = s; store.set('amiibo.slot', s); renderSlots(); };
+    b.onclick = () => {
+      if (locked.has(s)) { shakeSlot(s); buzz(false); return log(t('slotLocked', { n: s + 1 })); }
+      state.slot = s; store.set('amiibo.slot', s); renderSlots(); render();
+    };
+    const lk = document.createElement('span');
+    lk.className = 'lock'; lk.setAttribute('role', 'button'); lk.tabIndex = 0;
+    lk.setAttribute('aria-label', t(isLocked ? 'unlock' : 'lock', { n: s + 1 })); lk.title = lk.getAttribute('aria-label');
+    lk.innerHTML = lockIcon(isLocked);
+    lk.onclick = e => { e.stopPropagation(); toggleLock(s); };
+    lk.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); toggleLock(s); } };
+    b.appendChild(lk);
     el.appendChild(b);
   }
 }
@@ -1005,11 +1183,32 @@ function render() {
   list.innerHTML = '';
   state.visible = [];
   if (!shown.length) { const e = document.createElement('div'); e.className = 'empty'; e.textContent = t('emptySearch'); list.appendChild(e); return; }
-  const groups = new Map();
-  for (const it of shown) { const g = root && it.dir.startsWith(root) ? it.dir.slice(root.length) : it.dir; (groups.get(g) || groups.set(g, []).get(g)).push(it); }
-  for (const [g, items] of groups) {
-    const det = document.createElement('details'); det.className = 'group'; det.dataset.g = g; det.open = !open.has(g) || !!q;
-    const sum = document.createElement('summary'); sum.textContent = g ? g.replace(/\//g, ' / ') : t('noFolder');
+  // Special groups first (only without a search), then folders / series / flat list by name
+  const groups = [];
+  if (!q) {
+    const byKey = new Map(state.items.map(i => [i.key, i]));
+    const rec = recents.map(k => byKey.get(k)).filter(Boolean);
+    const fav = state.items.filter(i => favs.has(i.key)).sort((a, b) => a.name.localeCompare(b.name, 'fr', { numeric: true }));
+    if (fav.length) groups.push(['#fav', t('favorites'), fav, true]);
+    if (rec.length) groups.push(['#recent', t('recents'), rec, true]);
+  }
+  const main = new Map();
+  const add = (g, label, it) => { if (!main.has(g)) main.set(g, [g, label, [], false]); main.get(g)[2].push(it); };
+  if (prefs.sort === 'name') {
+    for (const it of [...shown].sort((a, b) => a.name.localeCompare(b.name, 'fr', { numeric: true }))) add('#all', t('allAmiibo'), it);
+  } else if (prefs.sort === 'series') {
+    const ser = it => { const i = state.db.get(it.id); return i && i.series ? i.series : ''; };
+    for (const it of [...shown].sort((a, b) => (ser(a) || '\uffff').localeCompare(ser(b) || '\uffff', 'fr') || a.name.localeCompare(b.name, 'fr', { numeric: true }))) {
+      const g = ser(it); add('s:' + g, g || t('unknownSeries'), it);
+    }
+  } else {
+    for (const it of shown) { const g = root && it.dir.startsWith(root) ? it.dir.slice(root.length) : it.dir; add(g, g ? g.replace(/\//g, ' / ') : t('noFolder'), it); }
+  }
+  groups.push(...main.values());
+  const seenVisible = new Set();
+  for (const [g, label, items, special] of groups) {
+    const det = document.createElement('details'); det.className = 'group' + (special ? ' special' : ''); det.dataset.g = g; det.open = !open.has(g) || !!q;
+    const sum = document.createElement('summary'); sum.textContent = label;
     const c = document.createElement('span'); c.textContent = items.length; sum.appendChild(c);
     det.appendChild(sum);
     const rows = document.createElement('div'); rows.className = 'rows';
@@ -1017,7 +1216,7 @@ function render() {
       const b = document.createElement('button');
       b.className = 'am' + (it.st ? ' ' + it.st : '') + (it.key === state.cursorKey ? ' cur' : '');
       b.dataset.key = it.key;
-      state.visible.push(it);
+      if (!seenVisible.has(it.key)) { seenVisible.add(it.key); state.visible.push(it); }
       const dot = it.sig === null ? '' : it.sig ? ' ok' : ' bad';
       b.innerHTML = `<span class="dot${dot}"></span><span class="txt"><span class="name"></span><span class="id"></span></span><span class="act"></span>`;
       b.insertBefore(makeImg(it.id, ''), b.querySelector('.txt')).className = 'pic';
@@ -1032,7 +1231,19 @@ function render() {
         q.onmouseenter = () => showTip(q, best); q.onmouseleave = hideTip;
         q.onclick = e => { e.stopPropagation(); showTip(q, best); };
         b.insertBefore(q, b.querySelector('.act'));
-      } else {
+      }
+      const star = document.createElement('span');
+      const isFav = favs.has(it.key);
+      star.className = 'fav' + (isFav ? ' on' : ''); star.setAttribute('role', 'button');
+      star.textContent = isFav ? '★' : '☆';
+      star.setAttribute('aria-label', t(isFav ? 'delFav' : 'addFav')); star.title = star.getAttribute('aria-label');
+      star.onclick = e => {
+        e.stopPropagation();
+        if (favs.has(it.key)) favs.delete(it.key); else favs.add(it.key);
+        saveSet('amiibo.favs', favs); buzz(true); render();
+      };
+      b.insertBefore(star, b.querySelector('.act'));
+      if (!best) {
         b.title = it.sig === false ? t('sigBad') : t('emulateIn', { n: state.slot + 1 });
       }
       b.onclick = () => { b.blur(); setCursor(it); emulate(it); };
@@ -1083,6 +1294,16 @@ $('#setClose').onclick = closeSettings;
 sheet.addEventListener('click', e => { if (e.target === sheet) closeSettings(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && sheet.classList.contains('open')) closeSettings(); }, true);
 for (const b of document.querySelectorAll('#langSeg button')) b.onclick = () => setLang(b.dataset.lang);
+const segPref = (sel, key, storeKey, after) => {
+  for (const b of document.querySelectorAll(sel + ' button')) b.onclick = () => {
+    prefs[key] = b.dataset.v; store.set(storeKey, b.dataset.v); applyPrefs(); if (after) after();
+  };
+};
+segPref('#themeSeg', 'theme', 'amiibo.theme');
+segPref('#sortSeg', 'sort', 'amiibo.sort', render);
+segPref('#densitySeg', 'density', 'amiibo.density');
+$('#optAuto').onchange = e => { prefs.auto = e.target.checked; store.set('amiibo.autoconnect', prefs.auto ? '1' : '0'); };
+$('#optVibe').onchange = e => { prefs.vibe = e.target.checked; store.set('amiibo.vibrate', prefs.vibe ? '1' : '0'); if (prefs.vibe) buzz(true); };
 $('#btnClear').onclick = async () => {
   const n = state.items.length;
   if (!n || !confirm(t('clearConfirm', { n }))) return;
@@ -1101,6 +1322,8 @@ $('#btnClear').onclick = async () => {
     $('#dropFolder').onclick = () => $('#pickFiles').click();
   }
   if (!window.isSecureContext || !crypto.subtle) $('#warn').style.display = 'block';
+  if (locked.has(state.slot)) { const free = [...Array(8).keys()].find(i => !locked.has(i)); if (free !== undefined) state.slot = free; }
+  applyPrefs();
   applyLang();
   $('#optRemember').checked = store.get('amiibo.remember') === '1';
   const k = store.get('amiibo.key');
@@ -1110,6 +1333,8 @@ $('#btnClear').onclick = async () => {
   loadDb();
   log(t('readyLog'));
   restoreItems().then(applyLang);
+  const lastBle = store.get('amiibo.bleId');
+  if (NATIVE && prefs.auto && lastBle) { log(t('autoTry')); connectBleNative(lastBle); }
 })();
 </script>
 </body>

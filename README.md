@@ -9,6 +9,7 @@ Chameleon over Bluetooth LE, ready to scan on a Switch.
 - [Capacitor 7](https://capacitorjs.com/) to package it as an Android app
 - `@capacitor-community/bluetooth-le` for the Chameleon Ultra BLE link
 - `jszip` to import a zipped amiibo folder (keeps sub-folders)
+- `@capacitor/haptics` for vibration feedback
 - Hardware: Chameleon Ultra (default BLE pairing code `123456`)
 
 ## Build the APK
@@ -47,7 +48,13 @@ The `android/` project is committed because it holds the custom launcher icon
 - Load `key_retail.bin` to enable a new random UID on every emulation.
 - Bottom bar: previous amiibo, new UID, next amiibo.
 - Loaded amiibo are saved on the device and reloaded every time the app opens.
-- The gear button (top right) opens the settings: language (French / English) and clearing the saved amiibo list.
+- Tap the padlock on a slot to lock it: the app will refuse to write to a locked
+  slot until you unlock it (app-side lock, other tools can still write to it).
+- The Chameleon battery level is shown next to the connection status.
+- Star an amiibo to pin it in **Favorites**; the last 8 sent amiibo appear in **Recent**.
+- The gear button (top right) opens the settings: language (French / English),
+  theme (dark / light / auto), sort (folder / name / series), list size,
+  auto-connect to the last Chameleon, vibration, and clearing the saved amiibo list.
 
 ## Disclaimer
 - This app ships **no** amiibo dumps and **no** Nintendo keys. You must provide
