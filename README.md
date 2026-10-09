@@ -37,3 +37,17 @@ The `android/` project is committed because it holds the custom launcher icon
 - Bottom bar: previous amiibo, new UID, next amiibo.
 - Loaded amiibo are saved on the device and reloaded every time the app opens.
 - The gear button (top right) opens the settings: language (French / English) and clearing the saved amiibo list.
+
+## Disclaimer
+- This app ships **no** amiibo dumps and **no** Nintendo keys. You must provide
+  your own `.bin` files and your own `key_retail.bin`, dumped from amiibo and
+  hardware you own.
+- Use it only with amiibo you legally own, for personal backup and use.
+- Amiibo Dock is an independent project. It is not affiliated with, endorsed by
+  or sponsored by Nintendo or RRG (Chameleon Ultra). "amiibo" and "Nintendo" are
+  trademarks of Nintendo.
+- Amiibo names and images are fetched from the public
+  [AmiiboAPI](https://www.amiiboapi.org/) project.
+
+## License
+[MIT](LICENSE)
