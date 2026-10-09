@@ -15,25 +15,28 @@
   --body:"Barlow",system-ui,sans-serif;
 }
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 var(--body)}
-body{min-height:100vh}
+html,body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 var(--body);overflow-x:hidden}
+body{min-height:100vh;background:radial-gradient(900px 420px at 15% -10%,rgba(90,215,230,.13),transparent 70%),radial-gradient(700px 380px at 110% 0%,rgba(240,180,76,.07),transparent 70%),var(--bg);background-attachment:fixed;-webkit-tap-highlight-color:transparent}
 button,input{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--sheikah);outline-offset:2px}
 .wrap{max-width:1180px;margin:0 auto;padding:20px 18px 40px}
 
 header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:18px}
-h1{font:700 2.4rem/1 var(--cond);margin:0;letter-spacing:.01em}
+h1{font:700 2.4rem/1 var(--cond);margin:0;letter-spacing:.01em;display:flex;align-items:center;gap:10px}
+h1 .logo{flex:none;width:1.15em;height:1.15em;border-radius:22%;background:#0f171e;border:1px solid var(--line);box-shadow:0 0 18px -6px var(--sheikah)}
+h1 .accent{color:var(--sheikah)}
 .sub{color:var(--muted);margin-top:4px}
 .conn{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.btn{background:var(--raised);border:1px solid var(--line);border-radius:6px;padding:8px 14px;cursor:pointer}
+.btn{background:var(--raised);border:1px solid var(--line);border-radius:10px;padding:9px 16px;cursor:pointer;transition:border-color .15s,transform .1s}
+.btn:active{transform:scale(.97)}
 .btn:hover{border-color:var(--sheikah)}
-.btn.primary{background:var(--sheikah);color:#0d1a22;border-color:var(--sheikah);font-weight:600}
+.btn.primary{background:linear-gradient(180deg,#7fe4ef,var(--sheikah));color:#0d1a22;border-color:var(--sheikah);font-weight:600;box-shadow:0 6px 18px -8px var(--sheikah)}
 .pill{font-size:.85rem;padding:5px 10px;border-radius:99px;border:1px solid var(--line);color:var(--muted)}
 .pill.on{color:var(--ok);border-color:var(--ok)}
 
 /* Slots : l'élément central */
-.slots{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;margin-bottom:20px}
-.slot{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 10px 12px;text-align:left;cursor:pointer;min-height:132px;display:flex;flex-direction:column;transition:border-color .15s,box-shadow .15s}
+.slots{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px;margin-bottom:20px}
+.slot{position:relative;min-width:0;background:linear-gradient(180deg,var(--raised),var(--panel));border:1px solid var(--line);border-radius:12px;padding:10px 10px 12px;text-align:left;cursor:pointer;min-height:132px;display:flex;flex-direction:column;transition:border-color .15s,box-shadow .15s}
 .slot .n{font:700 2rem/1 var(--cond);color:var(--muted)}
 .slot .pic{flex:1;display:flex;align-items:center;justify-content:center;min-height:70px}
 .slot .pic img{max-height:70px;max-width:100%;object-fit:contain;filter:drop-shadow(0 4px 8px rgba(0,0,0,.45))}
@@ -45,11 +48,13 @@ h1{font:700 2.4rem/1 var(--cond);margin:0;letter-spacing:.01em}
 .slot.flash{animation:flash .9s ease-out}
 @keyframes flash{from{box-shadow:0 0 0 2px var(--amber),0 0 30px var(--amber)}}
 
-.grid{display:grid;grid-template-columns:320px 1fr;gap:18px;align-items:start}
+.grid{display:grid;grid-template-columns:320px minmax(0,1fr);gap:18px;align-items:start}
+main{min-width:0}
 .side{display:flex;flex-direction:column;gap:14px}
-.box{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px}
-.box h2{font:600 1.25rem/1.1 var(--cond);margin:0 0 8px}
-.drop{border:1.5px dashed var(--line);border-radius:8px;padding:22px 14px;text-align:center;color:var(--muted);cursor:pointer;transition:border-color .15s,background .15s}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;box-shadow:0 8px 24px -16px rgba(0,0,0,.6)}
+.box h2{font:600 1.25rem/1.1 var(--cond);margin:0 0 8px;display:flex;align-items:center;gap:8px}
+.box h2::before{content:"";width:4px;height:.9em;border-radius:2px;background:var(--sheikah)}
+.drop{border:1.5px dashed var(--line);border-radius:10px;padding:22px 14px;text-align:center;color:var(--muted);cursor:pointer;transition:border-color .15s,background .15s}
 .drop strong{display:block;color:var(--text);font-weight:600;margin-bottom:2px}
 .drop.over{border-color:var(--sheikah);background:rgba(90,215,230,.07)}
 .keystate{font-size:.9rem;margin-top:8px;color:var(--muted)}
@@ -62,14 +67,15 @@ label.opt small{display:block;color:var(--muted)}
 .log .ok{color:var(--ok)} .log .bad{color:var(--bad)}
 
 .listhead{display:flex;gap:10px;align-items:center;margin-bottom:10px}
-.search{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:9px 12px}
+.search{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+.search:focus{border-color:var(--sheikah);outline:none}
 .count{color:var(--muted);font-size:.9rem;white-space:nowrap}
-details.group{background:var(--panel);border:1px solid var(--line);border-radius:8px;margin-bottom:10px}
+details.group{background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
 details.group summary{cursor:pointer;padding:10px 14px;font:600 1.15rem/1.2 var(--cond);list-style:none;display:flex;justify-content:space-between}
 details.group summary::-webkit-details-marker{display:none}
 details.group summary span{color:var(--muted);font:400 .85rem var(--body)}
-.rows{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px;padding:0 10px 10px}
-.am{display:flex;align-items:center;gap:10px;background:var(--raised);border:1px solid transparent;border-radius:6px;padding:9px 11px;text-align:left;cursor:pointer;width:100%}
+.rows{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(220px,100%),1fr));gap:6px;padding:0 10px 10px}
+.am{display:flex;align-items:center;gap:10px;min-width:0;background:var(--raised);border:1px solid transparent;border-radius:10px;transition:border-color .15s,transform .1s;padding:9px 11px;text-align:left;cursor:pointer;width:100%}
 .am:hover{border-color:var(--sheikah)}
 .am .pic{flex:none;width:34px;height:34px;object-fit:contain}
 .am .dot{flex:none;width:8px;height:8px;border-radius:50%;background:var(--line)}
@@ -97,17 +103,50 @@ kbd{display:inline-block;min-width:26px;text-align:center;background:var(--raise
 .empty{color:var(--muted);padding:40px 10px;text-align:center;border:1px dashed var(--line);border-radius:8px}
 .warn{background:rgba(232,112,95,.12);border:1px solid var(--bad);color:var(--text);padding:10px 14px;border-radius:8px;margin-bottom:14px;display:none}
 
-.touchbar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:none;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));background:rgba(18,27,36,.96);border-top:1px solid var(--line)}
-.touchbar button{flex:1;padding:14px 8px;border-radius:8px;border:1px solid var(--line);background:var(--raised);font:600 1rem var(--body)}
-.touchbar .mid{flex:1.6;background:var(--sheikah);color:#0d1a22;border-color:var(--sheikah)}
+.touchbar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:none;gap:8px;padding:8px 12px calc(8px + env(safe-area-inset-bottom,0px));background:rgba(15,23,30,.88);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--line)}
+.touchbar button{flex:1;padding:11px 8px;border-radius:12px;border:1px solid var(--line);background:var(--raised);font:600 .95rem var(--body)}
+.touchbar button:active{transform:scale(.96)}
+.touchbar .mid{flex:1.6;background:linear-gradient(180deg,#7fe4ef,var(--sheikah));color:#0d1a22;border-color:var(--sheikah);box-shadow:0 6px 18px -8px var(--sheikah)}
 body.native .touchbar{display:flex}
-body.native .wrap{padding-bottom:110px}
+body.native .wrap{padding-bottom:90px}
 body.native #btnUsb{display:none}
 body.native #btnBle{background:var(--sheikah);color:#0d1a22;border-color:var(--sheikah);font-weight:600}
 body.native .keysbox{display:none}
 @media (max-width:860px){
   .grid{grid-template-columns:1fr}
   .slots{grid-template-columns:repeat(4,1fr)}
+}
+@media (max-width:600px){
+  html,body{font-size:14px}
+  .wrap{padding:calc(12px + env(safe-area-inset-top,0px)) 12px 24px}
+  header{flex-direction:column;align-items:stretch;gap:10px;margin-bottom:12px}
+  h1{font-size:1.75rem}
+  .sub{font-size:.85rem}
+  .conn{gap:6px}
+  .conn .btn{flex:1;padding:9px 10px}
+  .slots{gap:6px;margin-bottom:12px}
+  .slot{min-height:0;padding:6px 6px 7px;border-radius:10px}
+  .slot .n{font-size:1.1rem}
+  .slot .pic{min-height:38px}
+  .slot .pic img{max-height:38px}
+  .slot .nick{font-size:.68rem;margin-top:3px}
+  .slot.active::after{top:7px;right:7px;width:6px;height:6px}
+  .grid{display:flex;flex-direction:column;align-items:stretch;gap:12px}
+  .side{display:contents}
+  main{order:2;width:100%}
+  .logbox{order:3}
+  .box{padding:12px}
+  .box h2{font-size:1.1rem}
+  .drop{padding:14px 10px;font-size:.88rem}
+  label.opt{font-size:.85rem}
+  .rows{grid-template-columns:1fr;padding:0 8px 8px;gap:5px}
+  details.group summary{padding:9px 12px;font-size:1.05rem}
+  .am{padding:7px 9px;gap:8px}
+  .am .pic{width:28px;height:28px}
+  .am .name{font-size:.92rem}
+  .am .id{font-size:.7rem}
+  .am .act{font-size:.75rem}
+  #tip{max-width:calc(100vw - 20px)}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -116,7 +155,7 @@ body.native .keysbox{display:none}
 <div class="wrap">
   <header>
     <div>
-      <h1>Socle amiibo</h1>
+      <h1><svg class="logo" viewBox="18 18 72 72" aria-hidden="true"><g fill="none" stroke="#5AD7E6" stroke-width="5" stroke-linecap="round"><path d="M47.64,47.64A9,9 0 0 1 60.36,47.64M41.98,41.98A17,17 0 0 1 66.02,41.98"/><path d="M32,64A22,6 0 1 1 76,64A22,6 0 1 1 32,64ZM32,64L32,71A22,6 0 0 0 76,71L76,64"/></g><circle cx="54" cy="54" r="3" fill="#5AD7E6"/></svg><span>Socle <span class="accent">amiibo</span></span></h1>
       <div class="sub">Choisis un slot, clique un amiibo, il est prêt dans ton Chameleon Ultra.</div>
     </div>
     <div class="conn">
@@ -165,7 +204,7 @@ body.native .keysbox{display:none}
         </div>
       </div>
 
-      <div class="box">
+      <div class="box logbox">
         <h2>Journal</h2>
         <div class="log" id="log"></div>
       </div>
