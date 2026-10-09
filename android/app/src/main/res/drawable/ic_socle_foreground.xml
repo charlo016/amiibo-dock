@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Minimal launcher foreground: amiibo base seen from the side with two signal waves -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Signal dot -->
+    <path
+        android:fillColor="#5AD7E6"
+        android:pathData="M54,54m-2.5,0a2.5,2.5 0,1 1,5 0a2.5,2.5 0,1 1,-5 0" />
+    <!-- Signal waves -->
+    <path
+        android:strokeColor="#5AD7E6"
+        android:strokeWidth="4"
+        android:strokeLineCap="round"
+        android:pathData="M47.64,47.64A9,9 0,0 1,60.36 47.64M41.98,41.98A17,17 0,0 1,66.02 41.98" />
+    <!-- Base: top ellipse and side wall -->
+    <path
+        android:strokeColor="#5AD7E6"
+        android:strokeWidth="4"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M32,64A22,6 0,1 1,76 64A22,6 0,1 1,32 64ZM32,64L32,71A22,6 0,0 0,76 71L76,64" />
+</vector>
