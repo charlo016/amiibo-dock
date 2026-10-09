@@ -27,6 +27,17 @@ gradlew assembleDebug
 ```
 Output: `android/app/build/outputs/apk/debug/app-debug.apk`
 
+### Signed release APK
+Release builds are signed with a private keystore that is **never** committed.
+Point Gradle to a properties file holding `storeFile`, `storePassword`,
+`keyAlias` and `keyPassword`, either in `android/local.properties`:
+```
+amiiboDock.signing=C:/path/to/amiibo-dock-keystore.properties
+```
+or through the `AMIIBO_DOCK_SIGNING` environment variable, then run
+`gradlew assembleRelease`. Output: `android/app/build/outputs/apk/release/app-release.apk`.
+GitHub Actions only builds unsigned debug APKs.
+
 The `android/` project is committed because it holds the custom launcher icon
 (`android/app/src/main/res`). Do not run `npx cap add android` again.
 

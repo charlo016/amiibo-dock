@@ -1,5 +1,14 @@
 apply plugin: 'com.android.application'
 
+// Release signing: local.properties (never committed) points to a private
+// keystore.properties file holding storeFile, storePassword, keyAlias, keyPassword.
+def signingProps = new Properties()
+def localProps = new Properties()
+def localFile = rootProject.file('local.properties')
+if (localFile.exists()) localFile.withInputStream { localProps.load(it) }
+def signingPath = localProps.getProperty('amiiboDock.signing') ?: System.getenv('AMIIBO_DOCK_SIGNING')
+if (signingPath && file(signingPath).exists()) file(signingPath).withInputStream { signingProps.load(it) }
+
 android {
     namespace "com.charlo.socleamiibo"
     compileSdk rootProject.ext.compileSdkVersion
@@ -7,8 +16,8 @@ android {
         applicationId "com.charlo.socleamiibo"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 2
-        versionName "1.1.0"
+        versionCode 3
+        versionName "1.1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -16,8 +25,19 @@ android {
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    signingConfigs {
+        release {
+            if (signingProps.getProperty('storeFile')) {
+                storeFile file(signingProps.getProperty('storeFile'))
+                storePassword signingProps.getProperty('storePassword')
+                keyAlias signingProps.getProperty('keyAlias')
+                keyPassword signingProps.getProperty('keyPassword')
+            }
+        }
+    }
     buildTypes {
         release {
+            if (signingProps.getProperty('storeFile')) signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
