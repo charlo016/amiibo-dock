@@ -346,7 +346,7 @@ body.compact .rows{gap:4px}
 <script src="native.js"></script>
 <script>
 /* ================= Langue ================= */
-const APP_VERSION = '1.2.0';
+const APP_VERSION = '1.2.1';
 const I18N = {
   fr: {
     sub: 'Choisis un slot, touche un amiibo, il est prêt dans ton Chameleon Ultra.',
@@ -395,8 +395,9 @@ const I18N = {
     sending: 'Envoi…', slotN: 'Slot {n}', error: 'Erreur', emulate: 'Émuler', empty: 'vide',
     sigBad: 'Signature invalide avec ta clé', emulateIn: 'Émuler dans le slot {n}', sendTo: 'Envoyer les amiibo dans le slot {n}',
     lootOf: 'Loot de {t}', tipFoot: 'Chances par scan, approximatives (tables datamined).',
+    slotActive: 'Chameleon passé sur le slot {n}.', slotActiveFail: 'Impossible de passer le Chameleon sur le slot {n} : {e}',
     lock: 'Verrouiller le slot {n}', unlock: 'Déverrouiller le slot {n}',
-    slotLocked: 'Le slot {n} est verrouillé. Touche le cadenas pour le déverrouiller.',
+    slotLocked: 'Le slot {n} est verrouillé, l\'app n\'écrit pas dessus. Touche le cadenas pour le déverrouiller.',
     lockedOn: 'Slot {n} verrouillé : l\'app n\'écrira plus dessus.', lockedOff: 'Slot {n} déverrouillé.',
     battery: 'Batterie du Chameleon : {p} % ({v} V)', batteryLow: 'Batterie du Chameleon faible : {p} %.',
     favorites: '★ Favoris', recents: 'Récents', addFav: 'Ajouter aux favoris', delFav: 'Retirer des favoris',
@@ -455,8 +456,9 @@ const I18N = {
     sending: 'Sending…', slotN: 'Slot {n}', error: 'Error', emulate: 'Emulate', empty: 'empty',
     sigBad: 'Invalid signature with your key', emulateIn: 'Emulate in slot {n}', sendTo: 'Send amiibo to slot {n}',
     lootOf: 'Loot from {t}', tipFoot: 'Chances per scan, approximate (datamined tables).',
+    slotActive: 'Chameleon switched to slot {n}.', slotActiveFail: 'Could not switch the Chameleon to slot {n}: {e}',
     lock: 'Lock slot {n}', unlock: 'Unlock slot {n}',
-    slotLocked: 'Slot {n} is locked. Tap the padlock to unlock it.',
+    slotLocked: 'Slot {n} is locked, the app does not write to it. Tap the padlock to unlock it.',
     lockedOn: 'Slot {n} locked: the app will not write to it anymore.', lockedOff: 'Slot {n} unlocked.',
     battery: 'Chameleon battery: {p}% ({v} V)', batteryLow: 'Chameleon battery low: {p}%.',
     favorites: '★ Favorites', recents: 'Recent', addFav: 'Add to favorites', delFav: 'Remove from favorites',
@@ -938,6 +940,7 @@ async function afterConnect(dev, via) {
   try { const v = await dev.cmd(CMD.VERSION); log(t('connected', { via, v: v[0] + '.' + v[1] }), 'ok'); }
   catch (e) { log(t('noAnswer', { via }), 'bad'); }
   try { state.activeSlot = (await dev.cmd(CMD.GET_ACTIVE))[0]; } catch {}
+  if (state.activeSlot != null && state.activeSlot < 8) { state.slot = state.activeSlot; store.set('amiibo.slot', state.slot); }
   for (let s = 0; s < 8; s++) {
     try { state.slotNames[s] = new TextDecoder().decode(await dev.cmd(CMD.GET_NICK, [s, HF], 1500)); }
     catch { state.slotNames[s] = ''; }
@@ -1032,7 +1035,9 @@ async function emulate(item, forceNew = false) {
   } finally {
     state.busy = false; render();
     const p = state.pending; state.pending = null;
+    const ps = state.pendingSlot; state.pendingSlot = null;
     if (p) emulate(p.item, p.forceNew);
+    else if (ps != null && ps !== state.activeSlot) selectSlot(ps);
   }
 }
 
@@ -1138,6 +1143,26 @@ function shakeSlot(s) {
   const el = $('#slots').children[s]; if (!el) return;
   el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake');
 }
+// Select a slot in the app and make it the active slot on the Chameleon.
+// While an amiibo is being written, the switch waits so pages never land in the wrong slot.
+async function selectSlot(s) {
+  state.slot = s; store.set('amiibo.slot', s);
+  renderSlots(); render();
+  const d = state.dev;
+  if (!d) return;
+  if (state.busy) { state.pendingSlot = s; return; }
+  try {
+    await d.cmd(CMD.SET_ACTIVE, [s]);
+    await d.cmd(CMD.MODE, [0]);
+    state.activeSlot = s;
+    renderSlots();
+    log(t('slotActive', { n: s + 1 }));
+    buzz(true);
+    // Persist the active slot on the device, once the user stops tapping around
+    clearTimeout(state.saveTimer);
+    state.saveTimer = setTimeout(() => { if (state.dev === d && !state.busy) d.cmd(CMD.SAVE, [], 10000).catch(() => {}); }, 1500);
+  } catch (e) { buzz(false); log(t('slotActiveFail', { n: s + 1, e: e.message }), 'bad'); }
+}
 function toggleLock(s) {
   if (locked.has(s)) { locked.delete(s); log(t('lockedOff', { n: s + 1 })); }
   else { locked.add(s); log(t('lockedOn', { n: s + 1 }), 'ok'); }
@@ -1157,10 +1182,7 @@ function renderSlots(flash) {
     b.querySelector('.nick').textContent = state.slotNames[s] || (state.slotIds[s] && !state.dev ? state.slotIds[s].name : (state.dev ? t('empty') : ''));
     b.setAttribute('aria-pressed', s === state.slot);
     b.title = (info ? `${info.name} (${info.series})\n` : '') + t('sendTo', { n: s + 1 });
-    b.onclick = () => {
-      if (locked.has(s)) { shakeSlot(s); buzz(false); return log(t('slotLocked', { n: s + 1 })); }
-      state.slot = s; store.set('amiibo.slot', s); renderSlots(); render();
-    };
+    b.onclick = () => selectSlot(s);
     const lk = document.createElement('span');
     lk.className = 'lock'; lk.setAttribute('role', 'button'); lk.tabIndex = 0;
     lk.setAttribute('aria-label', t(isLocked ? 'unlock' : 'lock', { n: s + 1 })); lk.title = lk.getAttribute('aria-label');
@@ -1322,7 +1344,6 @@ $('#btnClear').onclick = async () => {
     $('#dropFolder').onclick = () => $('#pickFiles').click();
   }
   if (!window.isSecureContext || !crypto.subtle) $('#warn').style.display = 'block';
-  if (locked.has(state.slot)) { const free = [...Array(8).keys()].find(i => !locked.has(i)); if (free !== undefined) state.slot = free; }
   applyPrefs();
   applyLang();
   $('#optRemember').checked = store.get('amiibo.remember') === '1';

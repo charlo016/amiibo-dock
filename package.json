@@ -1,6 +1,6 @@
 {
   "name": "amiibo-dock",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "private": true,
   "scripts": {
     "build": "esbuild src/native.js --bundle --format=iife --minify --outfile=www/native.js"

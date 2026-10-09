@@ -48,8 +48,11 @@ The `android/` project is committed because it holds the custom launcher icon
 - Load `key_retail.bin` to enable a new random UID on every emulation.
 - Bottom bar: previous amiibo, new UID, next amiibo.
 - Loaded amiibo are saved on the device and reloaded every time the app opens.
+- Tapping a slot makes it the active slot on the Chameleon too; on connect, the app
+  follows the slot already active on the device.
 - Tap the padlock on a slot to lock it: the app will refuse to write to a locked
-  slot until you unlock it (app-side lock, other tools can still write to it).
+  slot until you unlock it, but you can still activate it (app-side lock, other
+  tools can still write to it).
 - The Chameleon battery level is shown next to the connection status.
 - Star an amiibo to pin it in **Favorites**; the last 8 sent amiibo appear in **Recent**.
 - The gear button (top right) opens the settings: language (French / English),
