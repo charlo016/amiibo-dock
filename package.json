@@ -1,0 +1,18 @@
+{
+  "name": "socle-amiibo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "esbuild src/native.js --bundle --format=iife --minify --outfile=www/native.js"
+  },
+  "dependencies": {
+    "@capacitor-community/bluetooth-le": "^7.0.0",
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
+    "jszip": "^3.10.1"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.0.0",
+    "esbuild": "^0.25.0"
+  }
+}
