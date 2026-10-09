@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Socle amiibo pour Chameleon Ultra</title>
+<title>Amiibo Dock</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -116,6 +116,27 @@ body.native .keysbox{display:none}
   .grid{grid-template-columns:1fr}
   .slots{grid-template-columns:repeat(4,1fr)}
 }
+.titlebar{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.iconbtn{flex:none;width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:var(--raised);border:1px solid var(--line);color:var(--muted);cursor:pointer;transition:color .15s,border-color .15s,transform .1s}
+.iconbtn:hover{color:var(--sheikah);border-color:var(--sheikah)}
+.iconbtn:active{transform:scale(.94)}
+.iconbtn svg{width:20px;height:20px}
+.sheet{position:fixed;inset:0;z-index:60;display:none;align-items:flex-end;justify-content:center;background:rgba(5,10,14,.6);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.sheet.open{display:flex}
+.sheet .panel{width:100%;max-width:440px;background:var(--panel);border:1px solid var(--line);border-bottom:0;border-radius:18px 18px 0 0;padding:18px 18px calc(18px + env(safe-area-inset-bottom,0px));box-shadow:0 -20px 50px -20px rgba(0,0,0,.7);animation:up .2s ease-out}
+@keyframes up{from{transform:translateY(30px);opacity:0}}
+@media (min-width:601px){.sheet{align-items:center}.sheet .panel{border-radius:16px;border-bottom:1px solid var(--line)}}
+.sheet .head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.sheet h2{font:700 1.5rem/1 var(--cond);margin:0}
+.set{padding:12px 0;border-top:1px solid var(--line)}
+.set .lbl{font:600 1.05rem/1.2 var(--cond);margin-bottom:8px}
+.set small{display:block;color:var(--muted);font-size:.82rem;margin-bottom:8px}
+.seg{display:flex;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:3px;gap:3px}
+.seg button{flex:1;padding:9px 8px;border:0;border-radius:9px;background:transparent;color:var(--muted);font-weight:600;cursor:pointer}
+.seg button.on{background:var(--sheikah);color:#0d1a22}
+.btn.danger{border-color:var(--bad);color:var(--bad);background:transparent}
+.btn.danger:disabled{opacity:.4;cursor:default}
+.ver{color:var(--muted);font-size:.8rem;text-align:center;margin-top:10px}
 @media (max-width:600px){
   html,body{font-size:14px}
   .wrap{padding:calc(12px + env(safe-area-inset-top,0px)) 12px 24px}
@@ -155,14 +176,17 @@ body.native .keysbox{display:none}
 <div class="wrap">
   <header>
     <div>
-      <h1><svg class="logo" viewBox="18 18 72 72" aria-hidden="true"><g fill="none" stroke="#5AD7E6" stroke-width="5" stroke-linecap="round"><path d="M47.64,47.64A9,9 0 0 1 60.36,47.64M41.98,41.98A17,17 0 0 1 66.02,41.98"/><path d="M32,64A22,6 0 1 1 76,64A22,6 0 1 1 32,64ZM32,64L32,71A22,6 0 0 0 76,71L76,64"/></g><circle cx="54" cy="54" r="3" fill="#5AD7E6"/></svg><span>Socle <span class="accent">amiibo</span></span></h1>
-      <div class="sub">Choisis un slot, clique un amiibo, il est prêt dans ton Chameleon Ultra.</div>
+      <div class="titlebar">
+        <h1><svg class="logo" viewBox="18 18 72 72" aria-hidden="true"><g fill="none" stroke="#5AD7E6" stroke-width="5" stroke-linecap="round"><path d="M47.64,47.64A9,9 0 0 1 60.36,47.64M41.98,41.98A17,17 0 0 1 66.02,41.98"/><path d="M32,64A22,6 0 1 1 76,64A22,6 0 1 1 32,64ZM32,64L32,71A22,6 0 0 0 76,71L76,64"/></g><circle cx="54" cy="54" r="3" fill="#5AD7E6"/></svg><span>Amiibo <span class="accent">Dock</span></span></h1>
+        <button class="iconbtn" id="btnSettings" aria-label="Paramètres" data-i18n-aria="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+      </div>
+      <div class="sub" data-i18n="sub"></div>
     </div>
     <div class="conn">
-      <span id="connState" class="pill">Déconnecté</span>
-      <button class="btn primary" id="btnUsb">Connecter par USB</button>
-      <button class="btn" id="btnBle">Bluetooth</button>
-      <button class="btn" id="btnOff" hidden>Déconnecter</button>
+      <span id="connState" class="pill"></span>
+      <button class="btn primary" id="btnUsb" data-i18n="btnUsb"></button>
+      <button class="btn" id="btnBle" data-i18n="btnBle"></button>
+      <button class="btn" id="btnOff" data-i18n="btnOff" hidden></button>
     </div>
   </header>
 
@@ -173,61 +197,186 @@ body.native .keysbox{display:none}
   <div class="grid">
     <aside class="side">
       <div class="box">
-        <h2>Tes bins</h2>
-        <div class="drop" id="dropFolder" tabindex="0" role="button">
-          <strong>Dépose ton dossier ici</strong>
-          Les sous-dossiers sont lus aussi. Ou clique pour choisir.
-        </div>
+        <h2 data-i18n="binsTitle"></h2>
+        <div class="drop" id="dropFolder" tabindex="0" role="button" data-i18n-html="dropFolder"></div>
         <input type="file" id="pickFolder" webkitdirectory multiple hidden>
         <input type="file" id="pickFiles" multiple accept=".bin,.zip,application/zip,application/octet-stream" hidden>
       </div>
 
       <div class="box">
-        <h2>Clé retail</h2>
-        <div class="drop" id="dropKey" tabindex="0" role="button">
-          <strong>key_retail.bin</strong>
-          Dépose-la ou clique pour choisir.
-        </div>
+        <h2 data-i18n="keyTitle"></h2>
+        <div class="drop" id="dropKey" tabindex="0" role="button" data-i18n-html="dropKey"></div>
         <input type="file" id="pickKey" multiple hidden>
-        <div class="keystate" id="keyState">Aucune clé chargée. Les amiibo seront émulés tels quels.</div>
+        <div class="keystate" id="keyState"></div>
         <label class="opt"><input type="checkbox" id="optRand" disabled>
-          <span>Nouvel UID à chaque émulation<small>Le jeu voit un nouvel amiibo, donc pas de limite d'un scan par jour.</small></span></label>
+          <span data-i18n-html="optRand"></span></label>
         <label class="opt"><input type="checkbox" id="optRemember">
-          <span>Garder la clé sur cet ordi<small>Stockée seulement dans ce navigateur.</small></span></label>
+          <span data-i18n-html="optRemember"></span></label>
       </div>
 
       <div class="box keysbox">
-        <h2>Raccourcis clavier</h2>
+        <h2 data-i18n="shortcutsTitle"></h2>
         <div class="keys">
-          <span><kbd>Espace</kbd></span><span>Renvoie le même amiibo avec un nouvel UID</span>
-          <span><kbd>←</kbd> <kbd>→</kbd></span><span>Amiibo précédent ou suivant, envoyé tout de suite</span>
+          <span><kbd data-i18n="kSpace"></kbd></span><span data-i18n="kSpaceDesc"></span>
+          <span><kbd>←</kbd> <kbd>→</kbd></span><span data-i18n="kArrowsDesc"></span>
         </div>
       </div>
 
       <div class="box logbox">
-        <h2>Journal</h2>
+        <h2 data-i18n="logTitle"></h2>
         <div class="log" id="log"></div>
       </div>
     </aside>
 
     <main>
       <div class="listhead">
-        <input class="search" id="search" type="search" placeholder="Chercher un amiibo ou un dossier">
+        <input class="search" id="search" type="search" data-i18n-ph="search">
         <span class="count" id="count"></span>
       </div>
-      <div id="list"><div class="empty">Dépose ton dossier d'amiibo pour commencer.</div></div>
+      <div id="list"></div>
     </main>
   </div>
 </div>
 
 <div id="tip" role="tooltip"></div>
 <nav class="touchbar">
-  <button id="tbPrev" aria-label="Amiibo précédent">◀</button>
-  <button id="tbNew" class="mid">Nouvel UID</button>
-  <button id="tbNext" aria-label="Amiibo suivant">▶</button>
+  <button id="tbPrev" data-i18n-aria="prev">◀</button>
+  <button id="tbNew" class="mid" data-i18n="newUid"></button>
+  <button id="tbNext" data-i18n-aria="next">▶</button>
 </nav>
+<div class="sheet" id="settings" role="dialog" aria-modal="true" aria-labelledby="setTitle">
+  <div class="panel">
+    <div class="head">
+      <h2 id="setTitle" data-i18n="settings"></h2>
+      <button class="iconbtn" id="setClose" data-i18n-aria="close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="set">
+      <div class="lbl" data-i18n="language"></div>
+      <div class="seg" id="langSeg">
+        <button data-lang="fr">Français</button>
+        <button data-lang="en">English</button>
+      </div>
+    </div>
+    <div class="set">
+      <div class="lbl" data-i18n="savedTitle"></div>
+      <small id="savedInfo"></small>
+      <button class="btn danger" id="btnClear" data-i18n="clearList"></button>
+    </div>
+    <div class="ver" id="verInfo"></div>
+  </div>
+</div>
 <script src="native.js"></script>
 <script>
+/* ================= Langue ================= */
+const APP_VERSION = '1.1.0';
+const I18N = {
+  fr: {
+    sub: 'Choisis un slot, touche un amiibo, il est prêt dans ton Chameleon Ultra.',
+    disconnected: 'Déconnecté', connectedVia: 'Connecté ({via})',
+    btnUsb: 'Connecter par USB', btnBle: 'Bluetooth', btnBleNative: 'Connecter le Chameleon', btnOff: 'Déconnecter',
+    binsTitle: 'Tes bins',
+    dropFolder: '<strong>Dépose ton dossier ici</strong>Les sous-dossiers sont lus aussi. Ou clique pour choisir.',
+    dropFolderNative: '<strong>Choisis tes amiibo</strong>Un .zip de ton dossier garde les sous-dossiers. Tu peux aussi sélectionner plusieurs .bin.',
+    keyTitle: 'Clé retail',
+    dropKey: '<strong>key_retail.bin</strong>Dépose-la ou clique pour choisir.',
+    dropKeyNative: '<strong>key_retail.bin</strong>Touche pour la choisir.',
+    keyNone: 'Aucune clé chargée. Les amiibo seront émulés tels quels.',
+    keyOk: 'Clé chargée. Les signatures de tes bins sont vérifiées.',
+    optRand: 'Nouvel UID à chaque émulation<small>Le jeu voit un nouvel amiibo, donc pas de limite d\'un scan par jour.</small>',
+    optRemember: 'Garder la clé sur cet appareil<small>Stockée seulement sur cet appareil.</small>',
+    shortcutsTitle: 'Raccourcis clavier', kSpace: 'Espace',
+    kSpaceDesc: 'Renvoie le même amiibo avec un nouvel UID', kArrowsDesc: 'Amiibo précédent ou suivant, envoyé tout de suite',
+    logTitle: 'Journal', search: 'Chercher un amiibo ou un dossier',
+    emptyStart: 'Dépose ton dossier d\'amiibo pour commencer.', emptyStartNative: 'Choisis tes amiibo pour commencer.',
+    emptySearch: 'Aucun amiibo ne correspond à ta recherche.', noFolder: 'Sans dossier',
+    prev: 'Amiibo précédent', next: 'Amiibo suivant', newUid: 'Nouvel UID',
+    settings: 'Paramètres', close: 'Fermer', language: 'Langue',
+    savedTitle: 'Amiibo enregistrés', savedInfo: '{n} amiibo gardés sur cet appareil, rechargés à chaque ouverture.',
+    clearList: 'Effacer la liste', clearConfirm: 'Effacer les {n} amiibo enregistrés ? Tes fichiers d\'origine ne sont pas touchés.',
+    cleared: 'Liste d\'amiibo effacée.', version: 'Version {v}',
+    dbOffline: 'Base amiiboapi inaccessible, images de secours utilisées.',
+    keyLoaded: 'Clé retail chargée.', keyReloaded: 'Clé retail rechargée depuis cet appareil.',
+    zipWebOnly: 'Les .zip ne sont lus que dans l\'app Android.', zipBad: '{f}: zip illisible.',
+    added: '{n} amiibo ajoutés', skipped: ', {n} fichiers ignorés (pas un dump NTAG215)',
+    restored: '{n} amiibo rechargés depuis la dernière session.',
+    badKey: 'Ce fichier n\'est pas une clé retail valide (160 octets attendus).',
+    noReply: 'Pas de réponse à la commande {c}', refused: 'Commande {c} refusée (statut 0x{s})',
+    usbNA: 'USB indisponible ici. Ouvre la page dans Chrome ou Edge sur ordi.',
+    portFail: 'Impossible d\'ouvrir le port: {e}', bleFail: 'Connexion Bluetooth échouée: {e}',
+    webBleNA: 'Bluetooth web indisponible ici. Utilise Chrome sur ordi ou Android.',
+    connected: 'Connecté par {via}, firmware {v}.',
+    noAnswer: 'Port ouvert par {via}, mais le Chameleon ne répond pas. Vérifie que c\'est le bon port.',
+    disconnectedLog: 'Chameleon déconnecté.', connectFirst: 'Connecte ton Chameleon d\'abord.',
+    needKey: 'La clé retail est nécessaire pour changer l\'UID.',
+    badSig: 'Signature invalide: ce bin ne correspond pas à la clé, ou il est corrompu.',
+    repackFail: 'Le re-chiffrement a échoué, amiibo pas envoyé.',
+    ready: '{name} prêt dans le slot {s} (UID {uid}).',
+    sendFirst: 'Envoie d\'abord un amiibo, ensuite « Nouvel UID » le renvoie avec un nouvel UID.',
+    insecure: 'Le navigateur bloque la crypto et l\'USB sur cette page. Ouvre-la dans Chrome ou Edge, directement depuis le fichier ou via http://localhost.',
+    readyLog: 'Prêt. Connecte ton Chameleon et charge tes amiibo.',
+    sending: 'Envoi…', slotN: 'Slot {n}', error: 'Erreur', emulate: 'Émuler', empty: 'vide',
+    sigBad: 'Signature invalide avec ta clé', emulateIn: 'Émuler dans le slot {n}', sendTo: 'Envoyer les amiibo dans le slot {n}',
+    lootOf: 'Loot de {t}', tipFoot: 'Chances par scan, approximatives (tables datamined).'
+  },
+  en: {
+    sub: 'Pick a slot, tap an amiibo, and it\'s ready in your Chameleon Ultra.',
+    disconnected: 'Disconnected', connectedVia: 'Connected ({via})',
+    btnUsb: 'Connect via USB', btnBle: 'Bluetooth', btnBleNative: 'Connect the Chameleon', btnOff: 'Disconnect',
+    binsTitle: 'Your bins',
+    dropFolder: '<strong>Drop your folder here</strong>Sub-folders are read too. Or click to choose.',
+    dropFolderNative: '<strong>Choose your amiibo</strong>A .zip of your folder keeps sub-folders. You can also select several .bin files.',
+    keyTitle: 'Retail key',
+    dropKey: '<strong>key_retail.bin</strong>Drop it or click to choose.',
+    dropKeyNative: '<strong>key_retail.bin</strong>Tap to choose it.',
+    keyNone: 'No key loaded. Amiibo will be emulated as-is.',
+    keyOk: 'Key loaded. Your bins\' signatures are checked.',
+    optRand: 'New UID on every emulation<small>The game sees a new amiibo, so no one-scan-per-day limit.</small>',
+    optRemember: 'Remember the key on this device<small>Stored only on this device.</small>',
+    shortcutsTitle: 'Keyboard shortcuts', kSpace: 'Space',
+    kSpaceDesc: 'Resends the same amiibo with a new UID', kArrowsDesc: 'Previous or next amiibo, sent right away',
+    logTitle: 'Log', search: 'Search an amiibo or a folder',
+    emptyStart: 'Drop your amiibo folder to get started.', emptyStartNative: 'Choose your amiibo to get started.',
+    emptySearch: 'No amiibo matches your search.', noFolder: 'No folder',
+    prev: 'Previous amiibo', next: 'Next amiibo', newUid: 'New UID',
+    settings: 'Settings', close: 'Close', language: 'Language',
+    savedTitle: 'Saved amiibo', savedInfo: '{n} amiibo kept on this device, reloaded every time the app opens.',
+    clearList: 'Clear the list', clearConfirm: 'Remove the {n} saved amiibo? Your original files are not touched.',
+    cleared: 'Amiibo list cleared.', version: 'Version {v}',
+    dbOffline: 'amiiboapi database unreachable, using fallback images.',
+    keyLoaded: 'Retail key loaded.', keyReloaded: 'Retail key reloaded from this device.',
+    zipWebOnly: '.zip files are only read in the Android app.', zipBad: '{f}: unreadable zip.',
+    added: '{n} amiibo added', skipped: ', {n} files skipped (not an NTAG215 dump)',
+    restored: '{n} amiibo restored from the last session.',
+    badKey: 'This file is not a valid retail key (160 bytes expected).',
+    noReply: 'No reply to command {c}', refused: 'Command {c} refused (status 0x{s})',
+    usbNA: 'USB is not available here. Open the page in Chrome or Edge on a computer.',
+    portFail: 'Cannot open the port: {e}', bleFail: 'Bluetooth connection failed: {e}',
+    webBleNA: 'Web Bluetooth is not available here. Use Chrome on a computer or Android.',
+    connected: 'Connected via {via}, firmware {v}.',
+    noAnswer: 'Port opened via {via}, but the Chameleon does not answer. Check that it is the right port.',
+    disconnectedLog: 'Chameleon disconnected.', connectFirst: 'Connect your Chameleon first.',
+    needKey: 'The retail key is needed to change the UID.',
+    badSig: 'Invalid signature: this bin does not match the key, or it is corrupted.',
+    repackFail: 'Re-encryption failed, amiibo not sent.',
+    ready: '{name} ready in slot {s} (UID {uid}).',
+    sendFirst: 'Send an amiibo first, then "New UID" resends it with a new UID.',
+    insecure: 'The browser blocks crypto and USB on this page. Open it in Chrome or Edge, directly from the file or via http://localhost.',
+    readyLog: 'Ready. Connect your Chameleon and load your amiibo.',
+    sending: 'Sending…', slotN: 'Slot {n}', error: 'Error', emulate: 'Emulate', empty: 'empty',
+    sigBad: 'Invalid signature with your key', emulateIn: 'Emulate in slot {n}', sendTo: 'Send amiibo to slot {n}',
+    lootOf: 'Loot from {t}', tipFoot: 'Chances per scan, approximate (datamined tables).'
+  }
+};
+let LANG = 'fr';
+// Translate a key, filling {placeholders} from vars
+function t(k, vars = {}) {
+  const str = (I18N[LANG] && I18N[LANG][k]) ?? I18N.fr[k] ?? k;
+  return str.replace(/\{(\w+)\}/g, (m, v) => (v in vars ? vars[v] : m));
+}
+// Pick the current-language variant of a { fr, en } pair (plain strings pass through)
+const L = (fr, en) => ({ fr, en });
+const tx = v => (v && typeof v === 'object' ? v[LANG] : v);
+
 /* ================= Utilitaires ================= */
 const $ = s => document.querySelector(s);
 const hex = b => Array.from(b, x => x.toString(16).padStart(2, '0')).join('').toUpperCase();
@@ -242,6 +391,32 @@ function log(msg, cls = '') {
   const d = document.createElement('div'); d.textContent = msg; if (cls) d.className = cls;
   const l = $('#log'); l.prepend(d); while (l.children.length > 40) l.lastChild.remove();
 }
+
+/* ================= Amiibo enregistrés (IndexedDB) ================= */
+const saved = {
+  db: null,
+  open() {
+    if (this.db) return Promise.resolve(this.db);
+    return new Promise((res, rej) => {
+      const r = indexedDB.open('amiibo-dock', 1);
+      r.onupgradeneeded = () => r.result.createObjectStore('items', { keyPath: 'key' });
+      r.onsuccess = () => res(this.db = r.result);
+      r.onerror = () => rej(r.error);
+    });
+  },
+  async tx(mode, fn) {
+    const db = await this.open();
+    return new Promise((res, rej) => {
+      const x = db.transaction('items', mode), st = x.objectStore('items');
+      const out = fn(st);
+      x.oncomplete = () => res(out && 'result' in out ? out.result : undefined);
+      x.onerror = () => rej(x.error);
+    });
+  },
+  put(items) { return this.tx('readwrite', st => { for (const i of items) st.put({ key: i.key, name: i.name, dir: i.dir, raw: i.raw }); }); },
+  all() { return this.tx('readonly', st => st.getAll()); },
+  clear() { return this.tx('readwrite', st => st.clear()); }
+};
 
 const state = {
   items: [], keys: null, dev: null, busy: false,
@@ -263,7 +438,7 @@ async function loadDb() {
     const a = j.amiibo.map(x => [(x.head + x.tail).toUpperCase(), x.name, x.amiiboSeries, x.image, x.gameSeries, x.character]);
     store.set('amiibo.db2', JSON.stringify({ t: Date.now(), a }));
     fill(a);
-  } catch { log('Base amiiboapi inaccessible, images de secours utilisées.'); render(); renderSlots(); }
+  } catch { log(t('dbOffline')); render(); renderSlots(); }
 }
 function imgFor(id) {
   const e = state.db.get(id);
@@ -386,12 +561,12 @@ function tryKey(buf) {
 function setKey(buf, silent) {
   state.keys = { data: parseMK(buf.slice(0, 80)), tag: parseMK(buf.slice(80)) };
   state.keyRaw = buf;
-  $('#keyState').textContent = 'Clé chargée. Les signatures de tes bins sont vérifiées.';
   $('#keyState').className = 'keystate ok';
+  applyLang();
   const r = $('#optRand'); r.disabled = false;
   if (store.get('amiibo.rand') !== '0') r.checked = true;
   if ($('#optRemember').checked) store.set('amiibo.key', btoa(String.fromCharCode(...buf)));
-  if (!silent) log('Clé retail chargée.', 'ok');
+  if (!silent) log(t('keyLoaded'), 'ok');
   verifyAll();
   return true;
 }
@@ -423,7 +598,7 @@ async function expandZips(files) {
   const out = [];
   for (const f of files) {
     if (!/\.zip$/i.test(f.file.name)) { out.push(f); continue; }
-    if (!window.JSZip) { log('Les .zip ne sont lus que dans l\'app Android.', 'bad'); continue; }
+    if (!window.JSZip) { log(t('zipWebOnly'), 'bad'); continue; }
     try {
       const zip = await JSZip.loadAsync(await f.file.arrayBuffer());
       for (const e of Object.values(zip.files)) {
@@ -433,13 +608,14 @@ async function expandZips(files) {
         const data = await e.async('uint8array');
         out.push({ dir: parts.join('/'), file: { name, size: data.length, arrayBuffer: async () => data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength) } });
       }
-    } catch (err) { log(`${f.file.name}: zip illisible.`, 'bad'); }
+    } catch (err) { log(t('zipBad', { f: f.file.name }), 'bad'); }
   }
   return out;
 }
 async function ingest(files) {
   files = await expandZips(files);
   let added = 0, skipped = 0;
+  const fresh = [];
   const seen = new Set(state.items.map(i => i.key));
   for (const { file, dir } of files) {
     const sz = file.size;
@@ -454,11 +630,31 @@ async function ingest(files) {
     const key = dir + '/' + file.name;
     if (seen.has(key)) continue;
     seen.add(key);
-    state.items.push({ key, name, dir: dir || 'Sans dossier', raw: t, id: hex(t.slice(0x54, 0x5C)), sig: null, st: '' });
+    const item = { key, name, dir: dir || '', raw: t, id: hex(t.slice(0x54, 0x5C)), sig: null, st: '' };
+    state.items.push(item); fresh.push(item);
     added++;
   }
+  sortItems();
+  log(t('added', { n: added }) + (skipped ? t('skipped', { n: skipped }) : '') + '.', added ? 'ok' : '');
+  if (fresh.length) saved.put(fresh).catch(() => {});
+  render();
+  verifyAll();
+}
+function sortItems() {
   state.items.sort((a, b) => a.dir.localeCompare(b.dir, 'fr') || a.name.localeCompare(b.name, 'fr', { numeric: true }));
-  log(`${added} amiibo ajoutés` + (skipped ? `, ${skipped} fichiers ignorés (pas un dump NTAG215)` : '') + '.', added ? 'ok' : '');
+}
+async function restoreItems() {
+  let rows = [];
+  try { rows = await saved.all(); } catch { return; }
+  const seen = new Set(state.items.map(i => i.key));
+  for (const r of rows) {
+    if (seen.has(r.key)) continue;
+    const raw = new Uint8Array(r.raw);
+    state.items.push({ key: r.key, name: r.name, dir: r.dir === 'Sans dossier' ? '' : r.dir, raw, id: hex(raw.slice(0x54, 0x5C)), sig: null, st: '' });
+  }
+  if (!rows.length) return;
+  sortItems();
+  log(t('restored', { n: rows.length }), 'ok');
   render();
   verifyAll();
 }
@@ -476,7 +672,7 @@ function setupDrop(el, onFiles) {
 setupDrop($('#dropFolder'), ingest);
 setupDrop($('#dropKey'), async files => {
   for (const { file } of files) if (tryKey(new Uint8Array(await file.arrayBuffer()))) return;
-  log('Ce fichier n\'est pas une clé retail valide (160 octets attendus).', 'bad');
+  log(t('badKey'), 'bad');
 });
 document.addEventListener('dragover', e => e.preventDefault());
 document.addEventListener('drop', async e => {
@@ -498,7 +694,7 @@ $('#pickFiles').onchange = e => {
 $('#pickKey').onchange = async e => {
   let ok = false;
   for (const f of e.target.files) ok = tryKey(new Uint8Array(await f.arrayBuffer())) || ok;
-  if (!ok) log('Ce fichier n\'est pas une clé retail valide (160 octets attendus).', 'bad');
+  if (!ok) log(t('badKey'), 'bad');
   e.target.value = '';
 };
 
@@ -535,11 +731,11 @@ class Chameleon {
       const p = new Promise((resolve, reject) => {
         const w = { cmd, resolve };
         this.waiters.push(w);
-        setTimeout(() => { const i = this.waiters.indexOf(w); if (i >= 0) { this.waiters.splice(i, 1); reject(new Error(`Pas de réponse à la commande ${cmd}`)); } }, timeout);
+        setTimeout(() => { const i = this.waiters.indexOf(w); if (i >= 0) { this.waiters.splice(i, 1); reject(new Error(t('noReply', { c: cmd }))); } }, timeout);
       });
       await this.send(f);
       const r = await p;
-      if (r.status !== 0x00 && r.status !== 0x68) throw new Error(`Commande ${cmd} refusée (statut 0x${r.status.toString(16)})`);
+      if (r.status !== 0x00 && r.status !== 0x68) throw new Error(t('refused', { c: cmd, s: r.status.toString(16) }));
       return r.data;
     };
     const next = this.chain.then(run, run);
@@ -549,10 +745,10 @@ class Chameleon {
 }
 
 async function connectUsb() {
-  if (!('serial' in navigator)) return log('USB indisponible ici. Ouvre la page dans Chrome ou Edge sur ordi.', 'bad');
+  if (!('serial' in navigator)) return log(t('usbNA'), 'bad');
   let port;
   try { port = await navigator.serial.requestPort(); } catch { return; }
-  try { await port.open({ baudRate: 115200 }); } catch (e) { return log('Impossible d\'ouvrir le port: ' + e.message, 'bad'); }
+  try { await port.open({ baudRate: 115200 }); } catch (e) { return log(t('portFail', { e: e.message }), 'bad'); }
   const writer = port.writable.getWriter();
   const reader = port.readable.getReader();
   const dev = new Chameleon(b => writer.write(b));
@@ -585,11 +781,11 @@ async function connectBleNative() {
     await B.startNotifications(id, NUS, NUS_TX, v => dev.feed(new Uint8Array(v.buffer, v.byteOffset, v.byteLength)));
     dev.close = async () => { try { await B.disconnect(id); } catch {} };
     await afterConnect(dev, 'Bluetooth');
-  } catch (e) { log('Connexion Bluetooth échouée: ' + (e.message || e), 'bad'); }
+  } catch (e) { log(t('bleFail', { e: e.message || e }), 'bad'); }
 }
 async function connectBle() {
   if (NATIVE) return connectBleNative();
-  if (!navigator.bluetooth) return log('Bluetooth web indisponible ici. Utilise Chrome sur ordi ou Android.', 'bad');
+  if (!navigator.bluetooth) return log(t('webBleNA'), 'bad');
   let device;
   try { device = await navigator.bluetooth.requestDevice({ filters: [{ namePrefix: 'Chameleon' }, { services: [NUS] }], optionalServices: [NUS] }); }
   catch { return; }
@@ -603,27 +799,27 @@ async function connectBle() {
     device.addEventListener('gattserverdisconnected', onDisconnect);
     dev.close = async () => { try { gatt.disconnect(); } catch {} };
     await afterConnect(dev, 'Bluetooth');
-  } catch (e) { log('Connexion Bluetooth échouée: ' + e.message, 'bad'); }
+  } catch (e) { log(t('bleFail', { e: e.message }), 'bad'); }
 }
 async function afterConnect(dev, via) {
   state.dev = dev;
-  try { const v = await dev.cmd(CMD.VERSION); log(`Connecté par ${via}, firmware ${v[0]}.${v[1]}.`, 'ok'); }
-  catch (e) { log(`Port ouvert par ${via}, mais le Chameleon ne répond pas. Vérifie que c'est le bon port.`, 'bad'); }
+  try { const v = await dev.cmd(CMD.VERSION); log(t('connected', { via, v: v[0] + '.' + v[1] }), 'ok'); }
+  catch (e) { log(t('noAnswer', { via }), 'bad'); }
   try { state.activeSlot = (await dev.cmd(CMD.GET_ACTIVE))[0]; } catch {}
   for (let s = 0; s < 8; s++) {
     try { state.slotNames[s] = new TextDecoder().decode(await dev.cmd(CMD.GET_NICK, [s, HF], 1500)); }
     catch { state.slotNames[s] = ''; }
   }
-  $('#connState').textContent = 'Connecté (' + via + ')'; $('#connState').className = 'pill on';
+  state.via = via; $('#connState').className = 'pill on'; applyLang();
   $('#btnOff').hidden = false;
   renderSlots();
 }
 function onDisconnect() {
   if (!state.dev) return;
   state.dev = null; state.activeSlot = null;
-  $('#connState').textContent = 'Déconnecté'; $('#connState').className = 'pill';
+  state.via = null; $('#connState').className = 'pill'; applyLang();
   $('#btnOff').hidden = true;
-  log('Chameleon déconnecté.');
+  log(t('disconnectedLog'));
   renderSlots();
 }
 $('#btnUsb').onclick = connectUsb;
@@ -632,19 +828,19 @@ $('#btnOff').onclick = async () => { const d = state.dev; if (d) { await d.close
 
 /* ================= Émulation ================= */
 async function emulate(item, forceNew = false) {
-  if (!state.dev) return log('Connecte ton Chameleon d\'abord.', 'bad');
+  if (!state.dev) return log(t('connectFirst'), 'bad');
   if (state.busy) { state.pending = { item, forceNew }; return; }
   state.busy = true; item.st = 'busy'; render();
   try {
     let tag = item.raw.slice();
     if (forceNew || $('#optRand').checked) {
-      if (!state.keys) throw new Error('La clé retail est nécessaire pour changer l\'UID.');
+      if (!state.keys) throw new Error(t('needKey'));
       const { plain, ok } = await unpack(tag);
-      if (!ok) throw new Error('Signature invalide: ce bin ne correspond pas à la clé, ou il est corrompu.');
+      if (!ok) throw new Error(t('badSig'));
       const u = new Uint8Array(7); crypto.getRandomValues(u); u[0] = 0x04;
       setUid(plain, u);
       tag = await pack(plain);
-      if (!(await unpack(tag)).ok) throw new Error('Le re-chiffrement a échoué, amiibo pas envoyé.');
+      if (!(await unpack(tag)).ok) throw new Error(t('repackFail'));
     }
     finalize(tag);
 
@@ -673,7 +869,7 @@ async function emulate(item, forceNew = false) {
     state.slotIds[s] = { id: item.id, name: item.name.slice(0, 28) }; store.set('amiibo.slotIds', JSON.stringify(state.slotIds));
     state.items.forEach(i => { if (i.st === 'done' && i.slot === s) i.st = ''; });
     item.st = 'done'; item.slot = s; state.lastKey = item.key;
-    log(`${item.name} prêt dans le slot ${s + 1} (UID ${hex(uid)}).`, 'ok');
+    log(t('ready', { name: item.name, s: s + 1, uid: hex(uid) }), 'ok');
     renderSlots(true);
   } catch (e) {
     item.st = 'err';
@@ -699,8 +895,8 @@ function setCursor(it) {
 let navTimer;
 function respin() {
   const it = state.items.find(i => i.key === (state.lastKey || state.cursorKey));
-  if (!it) return log('Envoie d\'abord un amiibo, ensuite « Nouvel UID » le renvoie avec un nouvel UID.');
-  if (!state.keys) return log('La clé retail est nécessaire pour changer l\'UID.', 'bad');
+  if (!it) return log(t('sendFirst'));
+  if (!state.keys) return log(t('needKey'), 'bad');
   setCursor(it);
   emulate(it, true);
 }
@@ -731,27 +927,32 @@ document.addEventListener('keyup', e => { if (e.code === 'Space' && !e.target.cl
 /* ================= Amiibo BEST (loot BOTW) ================= */
 // Chances approximatives d'après les tables datamined : coffre rare ~20 % par scan, puis tirage dans le coffre.
 // Les 3 premiers scans d'un même UID par jour seulement peuvent donner un coffre rare.
-const BEAST = 'Seulement après avoir libéré une Créature divine.';
-const ARMOR = '~4 à 8 %';
+const BEAST = L('Seulement après avoir libéré une Créature divine.', 'Only after freeing a Divine Beast.');
+const ARMOR = L('~4 à 8 %', '~4 to 8%');
 const BEST = [
   { test: t => /wolf/.test(t), title: 'Wolf Link',
-    loot: [['Loup compagnon', '100 %']], note: '3 cœurs par défaut, jusqu\'à 20 selon les données Twilight Princess HD sur l\'amiibo. Pas de coffre.' },
+    loot: [[L('Loup compagnon', 'Wolf companion'), '100 %']],
+    note: L('3 cœurs par défaut, jusqu\'à 20 selon les données Twilight Princess HD sur l\'amiibo. Pas de coffre.', '3 hearts by default, up to 20 depending on the Twilight Princess HD data on the amiibo. No chest.') },
   { test: t => /majora/.test(t), title: 'Link (Majora\'s Mask)',
-    loot: [['Masque du Dieu démon', ARMOR], ['Armure du Dieu démon', ARMOR], ['Bottes du Dieu démon', ARMOR], ['Épée du Dieu démon', '~2 %']], note: 'Épée : ' + BEAST },
+    loot: [[L('Masque du Dieu démon', 'Fierce Deity Mask'), ARMOR], [L('Armure du Dieu démon', 'Fierce Deity Armor'), ARMOR], [L('Bottes du Dieu démon', 'Fierce Deity Boots'), ARMOR], [L('Épée du Dieu démon', 'Fierce Deity Sword'), '~2 %']],
+    note: L('Épée : ', 'Sword: '), beast: true },
   { test: t => /ocarina/.test(t), title: 'Link (Ocarina of Time)',
-    loot: [['Bonnet du Temps', ARMOR], ['Tunique du Temps', ARMOR], ['Pantalon du Temps', ARMOR], ['Épée de Biggoron', '~2 %']], note: 'Épée : ' + BEAST },
+    loot: [[L('Bonnet du Temps', 'Cap of Time'), ARMOR], [L('Tunique du Temps', 'Tunic of Time'), ARMOR], [L('Pantalon du Temps', 'Trousers of Time'), ARMOR], [L('Épée de Biggoron', 'Biggoron\'s Sword'), '~2 %']],
+    note: L('Épée : ', 'Sword: '), beast: true },
   { test: t => /skyward/.test(t), title: 'Link (Skyward Sword)',
-    loot: [['Bonnet du Ciel', ARMOR], ['Tunique du Ciel', ARMOR], ['Pantalon du Ciel', ARMOR], ['Épée de la déesse', '~2 %']] },
+    loot: [[L('Bonnet du Ciel', 'Cap of the Sky'), ARMOR], [L('Tunique du Ciel', 'Tunic of the Sky'), ARMOR], [L('Pantalon du Ciel', 'Trousers of the Sky'), ARMOR], [L('Épée de la déesse', 'Goddess Sword'), '~2 %']] },
   { test: t => /8.?bit/.test(t), title: 'Link 8-bit',
-    loot: [['Bonnet du Héros', ARMOR], ['Tunique du Héros', ARMOR], ['Pantalon du Héros', ARMOR], ['Épée originale', '~2 %']] },
+    loot: [[L('Bonnet du Héros', 'Cap of the Hero'), ARMOR], [L('Tunique du Héros', 'Tunic of the Hero'), ARMOR], [L('Pantalon du Héros', 'Trousers of the Hero'), ARMOR], [L('Épée originale', 'Sword (8-bit)'), '~2 %']] },
   { test: t => /zelda/.test(t) && /(wind waker|toon|tetra)/.test(t) && !/link/.test(t), title: 'Zelda (The Wind Waker)',
-    loot: [['Bouclier de la brise marine', 'rare']] },
+    loot: [[L('Bouclier de la brise marine', 'Sea-Breeze Shield'), 'rare']] },
   { test: t => /toon link/.test(t) || (/link/.test(t) && /wind waker/.test(t)), title: 'Toon Link',
-    loot: [['Bonnet du Vent', ARMOR], ['Tunique du Vent', ARMOR], ['Pantalon du Vent', ARMOR], ['Boomerang de la brise marine', 'rare']] },
+    loot: [[L('Bonnet du Vent', 'Cap of the Wind'), ARMOR], [L('Tunique du Vent', 'Tunic of the Wind'), ARMOR], [L('Pantalon du Vent', 'Trousers of the Wind'), ARMOR], [L('Boomerang de la brise marine', 'Sea-Breeze Boomerang'), 'rare']] },
   { test: t => /link/.test(t) && !/(young|toon|wolf)/.test(t) && /(smash|twilight)/.test(t), title: 'Link (Smash / Twilight Princess)',
-    loot: [['Epona', '100 % au 1er scan'], ['Bonnet du crépuscule', '~6 %'], ['Tunique du crépuscule', '~4 %'], ['Pantalon du crépuscule', '~4 %']], note: 'Scanne près d\'une écurie pour pouvoir enregistrer Epona.' },
+    loot: [['Epona', L('100 % au 1er scan', '100% on 1st scan')], [L('Bonnet du crépuscule', 'Cap of Twilight'), '~6 %'], [L('Tunique du crépuscule', 'Tunic of Twilight'), '~4 %'], [L('Pantalon du crépuscule', 'Trousers of Twilight'), '~4 %']],
+    note: L('Scanne près d\'une écurie pour pouvoir enregistrer Epona.', 'Scan near a stable so you can register Epona.') },
   { test: t => /zelda/.test(t) && !/(link|toon|wind waker|tetra)/.test(t) && /(smash|twilight)/.test(t), title: 'Zelda (Smash / Twilight Princess)',
-    loot: [['Arc du crépuscule', '~2 %'], ['Arc royal', '~6 %'], ['Arc de chevalier', 'fréquent']], note: 'Arc du crépuscule : ' + BEAST }
+    loot: [[L('Arc du crépuscule', 'Twilight Bow'), '~2 %'], [L('Arc royal', 'Royal Bow'), '~6 %'], [L('Arc de chevalier', 'Knight\'s Bow'), L('fréquent', 'common')]],
+    note: L('Arc du crépuscule : ', 'Twilight Bow: '), beast: true }
 ];
 function bestOf(it) {
   const db = state.db.get(it.id);
@@ -763,8 +964,9 @@ const tip = $('#tip');
 function showTip(el, b) {
   tip.innerHTML = `<b></b><table>${b.loot.map(() => '<tr><td></td><td></td></tr>').join('')}</table><p></p>`;
   tip.querySelector('b').textContent = b.title;
-  tip.querySelectorAll('tr').forEach((tr, i) => { tr.cells[0].textContent = b.loot[i][0]; tr.cells[1].textContent = b.loot[i][1]; });
-  tip.querySelector('p').textContent = (b.note ? b.note + ' ' : '') + 'Chances par scan, approximatives (tables datamined).';
+  tip.querySelectorAll('tr').forEach((tr, i) => { tr.cells[0].textContent = tx(b.loot[i][0]); tr.cells[1].textContent = tx(b.loot[i][1]); });
+  const note = b.note ? tx(b.note) + (b.beast ? tx(BEAST) : '') + ' ' : '';
+  tip.querySelector('p').textContent = note + t('tipFoot');
   tip.style.display = 'block';
   const r = el.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight;
   let x = Math.min(r.left, innerWidth - w - 10), y = r.bottom + 8;
@@ -784,9 +986,9 @@ function renderSlots(flash) {
     b.innerHTML = `<span class="n">${s + 1}</span><span class="pic"></span><span class="nick"></span>`;
     const id = slotId(s), info = id && state.db.get(id);
     if (id) b.querySelector('.pic').appendChild(makeImg(id, info ? info.name : ''));
-    b.querySelector('.nick').textContent = state.slotNames[s] || (state.slotIds[s] && !state.dev ? state.slotIds[s].name : (state.dev ? 'vide' : ''));
+    b.querySelector('.nick').textContent = state.slotNames[s] || (state.slotIds[s] && !state.dev ? state.slotIds[s].name : (state.dev ? t('empty') : ''));
     b.setAttribute('aria-pressed', s === state.slot);
-    b.title = (info ? `${info.name} (${info.series})\n` : '') + `Envoyer les amiibo dans le slot ${s + 1}`;
+    b.title = (info ? `${info.name} (${info.series})\n` : '') + t('sendTo', { n: s + 1 });
     b.onclick = () => { state.slot = s; store.set('amiibo.slot', s); renderSlots(); };
     el.appendChild(b);
   }
@@ -794,7 +996,7 @@ function renderSlots(flash) {
 function render() {
   const q = $('#search').value.trim().toLowerCase();
   const list = $('#list');
-  if (!state.items.length) { list.innerHTML = '<div class="empty">Dépose ton dossier d\'amiibo pour commencer.</div>'; $('#count').textContent = ''; return; }
+  if (!state.items.length) { list.innerHTML = ''; const e = document.createElement('div'); e.className = 'empty'; e.textContent = t(NATIVE ? 'emptyStartNative' : 'emptyStart'); list.appendChild(e); $('#count').textContent = ''; return; }
   const segs = state.items.map(i => i.dir.split('/'));
   const root = segs.every(s => s.length > 1 && s[0] === segs[0][0]) ? segs[0][0] + '/' : '';
   const shown = state.items.filter(i => !q || i.name.toLowerCase().includes(q) || i.dir.toLowerCase().includes(q));
@@ -802,12 +1004,12 @@ function render() {
   const open = new Set([...list.querySelectorAll('details.group')].filter(d => !d.open).map(d => d.dataset.g));
   list.innerHTML = '';
   state.visible = [];
-  if (!shown.length) { list.innerHTML = '<div class="empty">Aucun amiibo ne correspond à ta recherche.</div>'; return; }
+  if (!shown.length) { const e = document.createElement('div'); e.className = 'empty'; e.textContent = t('emptySearch'); list.appendChild(e); return; }
   const groups = new Map();
   for (const it of shown) { const g = root && it.dir.startsWith(root) ? it.dir.slice(root.length) : it.dir; (groups.get(g) || groups.set(g, []).get(g)).push(it); }
   for (const [g, items] of groups) {
     const det = document.createElement('details'); det.className = 'group'; det.dataset.g = g; det.open = !open.has(g) || !!q;
-    const sum = document.createElement('summary'); sum.textContent = g.replace(/\//g, ' / ');
+    const sum = document.createElement('summary'); sum.textContent = g ? g.replace(/\//g, ' / ') : t('noFolder');
     const c = document.createElement('span'); c.textContent = items.length; sum.appendChild(c);
     det.appendChild(sum);
     const rows = document.createElement('div'); rows.className = 'rows';
@@ -822,16 +1024,16 @@ function render() {
       b.querySelector('.name').textContent = it.name;
       const info = state.db.get(it.id);
       b.querySelector('.id').textContent = info ? `${info.name}, ${info.series}` : `ID ${it.id}`;
-      b.querySelector('.act').textContent = it.st === 'busy' ? 'Envoi…' : it.st === 'done' ? `Slot ${it.slot + 1}` : it.st === 'err' ? 'Erreur' : 'Émuler';
+      b.querySelector('.act').textContent = it.st === 'busy' ? t('sending') : it.st === 'done' ? t('slotN', { n: it.slot + 1 }) : it.st === 'err' ? t('error') : t('emulate');
       const best = bestOf(it);
       if (best) {
         const q = document.createElement('span'); q.className = 'q'; q.textContent = '?';
-        q.setAttribute('aria-label', 'Loot de ' + best.title);
+        q.setAttribute('aria-label', t('lootOf', { t: best.title }));
         q.onmouseenter = () => showTip(q, best); q.onmouseleave = hideTip;
         q.onclick = e => { e.stopPropagation(); showTip(q, best); };
         b.insertBefore(q, b.querySelector('.act'));
       } else {
-        b.title = it.sig === false ? 'Signature invalide avec ta clé' : `Émuler dans le slot ${state.slot + 1}`;
+        b.title = it.sig === false ? t('sigBad') : t('emulateIn', { n: state.slot + 1 });
       }
       b.onclick = () => { b.blur(); setCursor(it); emulate(it); };
       rows.appendChild(b);
@@ -839,7 +1041,7 @@ function render() {
     det.appendChild(rows); list.appendChild(det);
   }
 }
-let t; $('#search').oninput = () => { clearTimeout(t); t = setTimeout(render, 120); };
+let searchTimer; $('#search').oninput = () => { clearTimeout(searchTimer); searchTimer = setTimeout(render, 120); };
 $('#optRand').onchange = e => store.set('amiibo.rand', e.target.checked ? '1' : '0');
 $('#optRemember').onchange = e => {
   store.set('amiibo.remember', e.target.checked ? '1' : '0');
@@ -847,25 +1049,67 @@ $('#optRemember').onchange = e => {
   if (!e.target.checked) store.del('amiibo.key');
 };
 
+/* ================= Paramètres ================= */
+// Push the current language into every static label, then redraw dynamic parts
+function applyLang() {
+  document.documentElement.lang = LANG;
+  for (const el of document.querySelectorAll('[data-i18n]')) el.textContent = t(el.dataset.i18n);
+  for (const el of document.querySelectorAll('[data-i18n-html]')) el.innerHTML = t(el.dataset.i18nHtml);
+  for (const el of document.querySelectorAll('[data-i18n-ph]')) el.placeholder = t(el.dataset.i18nPh);
+  for (const el of document.querySelectorAll('[data-i18n-aria]')) el.setAttribute('aria-label', t(el.dataset.i18nAria));
+  if (NATIVE) {
+    $('#dropFolder').innerHTML = t('dropFolderNative');
+    $('#dropKey').innerHTML = t('dropKeyNative');
+    $('#btnBle').textContent = t('btnBleNative');
+  }
+  $('#keyState').textContent = state.keys ? t('keyOk') : t('keyNone');
+  $('#connState').textContent = state.via ? t('connectedVia', { via: state.via }) : t('disconnected');
+  if ($('#warn').style.display === 'block') $('#warn').textContent = t('insecure');
+  for (const b of document.querySelectorAll('#langSeg button')) b.classList.toggle('on', b.dataset.lang === LANG);
+  $('#savedInfo').textContent = t('savedInfo', { n: state.items.length });
+  $('#btnClear').disabled = !state.items.length;
+  $('#verInfo').textContent = t('version', { v: APP_VERSION });
+}
+function setLang(l) {
+  LANG = I18N[l] ? l : 'fr';
+  store.set('amiibo.lang', LANG);
+  applyLang(); render(); renderSlots();
+}
+const sheet = $('#settings');
+function openSettings() { applyLang(); sheet.classList.add('open'); $('#setClose').focus(); }
+function closeSettings() { sheet.classList.remove('open'); $('#btnSettings').focus(); }
+$('#btnSettings').onclick = openSettings;
+$('#setClose').onclick = closeSettings;
+sheet.addEventListener('click', e => { if (e.target === sheet) closeSettings(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && sheet.classList.contains('open')) closeSettings(); }, true);
+for (const b of document.querySelectorAll('#langSeg button')) b.onclick = () => setLang(b.dataset.lang);
+$('#btnClear').onclick = async () => {
+  const n = state.items.length;
+  if (!n || !confirm(t('clearConfirm', { n }))) return;
+  try { await saved.clear(); } catch {}
+  state.items = []; state.visible = []; state.cursorKey = null; state.lastKey = null;
+  log(t('cleared'));
+  render(); applyLang();
+};
+
 /* ================= Démarrage ================= */
 (function init() {
+  const sl = store.get('amiibo.lang');
+  LANG = I18N[sl] ? sl : (/^fr/i.test(navigator.language || '') ? 'fr' : 'en');
   if (NATIVE) {
     document.body.classList.add('native');
-    const dz = $('#dropFolder');
-    dz.innerHTML = '<strong>Choisis tes amiibo</strong>Un .zip de ton dossier garde les sous-dossiers. Tu peux aussi sélectionner plusieurs .bin.';
-    dz.onclick = () => $('#pickFiles').click();
-    $('#btnBle').textContent = 'Connecter le Chameleon';
+    $('#dropFolder').onclick = () => $('#pickFiles').click();
   }
-  if (!window.isSecureContext || !crypto.subtle) {
-    const w = $('#warn'); w.style.display = 'block';
-    w.textContent = 'Le navigateur bloque la crypto et l\'USB sur cette page. Ouvre-la dans Chrome ou Edge, directement depuis le fichier ou via http://localhost.';
-  }
+  if (!window.isSecureContext || !crypto.subtle) $('#warn').style.display = 'block';
+  applyLang();
   $('#optRemember').checked = store.get('amiibo.remember') === '1';
   const k = store.get('amiibo.key');
-  if (k) { try { setKey(Uint8Array.from(atob(k), c => c.charCodeAt(0)), true); log('Clé retail rechargée depuis ce navigateur.'); } catch {} }
+  if (k) { try { setKey(Uint8Array.from(atob(k), c => c.charCodeAt(0)), true); log(t('keyReloaded')); } catch {} }
   renderSlots();
+  render();
   loadDb();
-  log('Prêt. Connecte ton Chameleon et dépose ton dossier.');
+  log(t('readyLog'));
+  restoreItems().then(applyLang);
 })();
 </script>
 </body>

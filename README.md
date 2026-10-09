@@ -1,4 +1,4 @@
-# Socle amiibo (Chameleon Ultra)
+# Amiibo Dock (Chameleon Ultra)
 
 Android app that turns a phone into an amiibo base for the **Chameleon Ultra**:
 pick a slot, tap an amiibo from your `.bin` collection, and it is loaded into the
@@ -15,7 +15,7 @@ Chameleon over Bluetooth LE, ready to scan on a Switch.
 
 ### With GitHub Actions
 Every push runs `.github/workflows/build-apk.yml`. Download the
-`socle-amiibo-apk` artifact from the run and install `app-debug.apk`.
+`amiibo-dock-apk` artifact from the run and install `app-debug.apk`.
 
 ### Locally (JDK 21 + Android SDK 35)
 ```
@@ -35,3 +35,5 @@ The `android/` project is committed because it holds the custom launcher icon
 - Load your amiibo as a `.zip` (keeps folders) or select several `.bin` files.
 - Load `key_retail.bin` to enable a new random UID on every emulation.
 - Bottom bar: previous amiibo, new UID, next amiibo.
+- Loaded amiibo are saved on the device and reloaded every time the app opens.
+- The gear button (top right) opens the settings: language (French / English) and clearing the saved amiibo list.

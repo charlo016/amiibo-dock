@@ -1,6 +1,6 @@
 {
-  "name": "socle-amiibo",
-  "version": "1.0.0",
+  "name": "amiibo-dock",
+  "version": "1.1.0",
   "private": true,
   "scripts": {
     "build": "esbuild src/native.js --bundle --format=iife --minify --outfile=www/native.js"

@@ -1,6 +1,6 @@
 {
   "appId": "com.charlo.socleamiibo",
-  "appName": "Socle amiibo",
+  "appName": "Amiibo Dock",
   "webDir": "www",
   "android": { "allowMixedContent": false },
   "server": { "androidScheme": "https" }
